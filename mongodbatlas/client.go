@@ -1,6 +1,7 @@
 package mongodbatlas
 
-/**
+/** Commented out for now, since golangci-lint is picky about unused functions
+
 // getMongodbAtlasClient :: returns a mongodbatlas client to perform API requests.
 func getMongodbAtlasClient(ctx context.Context, d *plugin.QueryData) (*mongodbatlas.Client, error) {
 	// Try to load client from cache
