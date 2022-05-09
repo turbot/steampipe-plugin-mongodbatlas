@@ -12,7 +12,7 @@ import (
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
-// getMongodbAtlasClient :: returns a mongodbatlas client to perform API requests
+// getMongodbAtlasClient :: returns a mongodbatlas client to perform API requests.
 func getMongodbAtlasClient(ctx context.Context, d *plugin.QueryData) (*mongodbatlas.Client, error) {
 	// Try to load client from cache
 	if cachedData, ok := d.ConnectionManager.Cache.Get(constants.CacheKeyMongodbAtlasClient); ok {

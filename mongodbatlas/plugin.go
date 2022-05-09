@@ -24,8 +24,3 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 
 	return p
 }
-
-type keys struct {
-	pub  string
-	priv string
-}
