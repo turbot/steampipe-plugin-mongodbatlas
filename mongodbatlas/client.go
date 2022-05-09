@@ -1,6 +1,17 @@
 package mongodbatlas
 
-/** Commented out for now, since golangci-lint is picky about unused functions
+import (
+	"context"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+
+	"github.com/mongodb-forks/digest"
+	"github.com/turbot/steampipe-plugin-mongodbatlas/constants"
+	"github.com/turbot/steampipe-plugin-sdk/v3/plugin"
+	"go.mongodb.org/atlas/mongodbatlas"
+)
 
 // getMongodbAtlasClient :: returns a mongodbatlas client to perform API requests.
 func getMongodbAtlasClient(ctx context.Context, d *plugin.QueryData) (*mongodbatlas.Client, error) {
@@ -56,6 +67,21 @@ func createClient(ctx context.Context, publicKey string, privateKey string) *mon
 		log.Fatalf(err.Error())
 	}
 
-	return mongodbatlas.NewClient(tc)
+	return mongodbatlas.NewClient(&http.Client{
+		Transport: loggingRoundTripper{tc.Transport},
+	})
 }
-**/
+
+// This type implements the http.RoundTripper interface
+type loggingRoundTripper struct {
+	Proxied http.RoundTripper
+}
+
+func (lrt loggingRoundTripper) RoundTrip(req *http.Request) (res *http.Response, e error) {
+	plugin.Logger(req.Context()).Trace("Sending request to:", req.URL)
+	res, e = lrt.Proxied.RoundTrip(req)
+	if e != nil {
+		plugin.Logger(req.Context()).Error("Error: %v", e)
+	}
+	return res, e
+}
