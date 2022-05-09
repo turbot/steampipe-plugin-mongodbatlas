@@ -1,17 +1,6 @@
 package mongodbatlas
 
-import (
-	"context"
-	"fmt"
-	"log"
-	"os"
-
-	"github.com/mongodb-forks/digest"
-	"github.com/turbot/steampipe-plugin-mongodbatlas/constants"
-	"github.com/turbot/steampipe-plugin-sdk/v3/plugin"
-	"go.mongodb.org/atlas/mongodbatlas"
-)
-
+/**
 // getMongodbAtlasClient :: returns a mongodbatlas client to perform API requests.
 func getMongodbAtlasClient(ctx context.Context, d *plugin.QueryData) (*mongodbatlas.Client, error) {
 	// Try to load client from cache
@@ -68,3 +57,4 @@ func createClient(ctx context.Context, publicKey string, privateKey string) *mon
 
 	return mongodbatlas.NewClient(tc)
 }
+**/
