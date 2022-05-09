@@ -19,7 +19,9 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			NewInstance: ConfigInstance,
 			Schema:      ConfigSchema,
 		},
-		TableMap: map[string]*plugin.Table{},
+		TableMap: map[string]*plugin.Table{
+			"mongodbatlas_project": tableAtlasProject(ctx),
+		},
 	}
 
 	return p
