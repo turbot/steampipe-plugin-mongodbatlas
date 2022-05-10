@@ -94,7 +94,6 @@ func listAtlasProjects(ctx context.Context, d *plugin.QueryData, h *plugin.Hydra
 		}
 
 		for _, project := range projects.Results {
-			plugin.Logger(ctx).Trace("mongodbatlas_project.listAtlasProjects", "streaming item", project.ClusterCount)
 			d.StreamListItem(ctx, project)
 
 			// Context can be cancelled due to manual cancellation or the limit has been hit
