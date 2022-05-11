@@ -14,10 +14,10 @@ func tableAtlasAdvancedCluster(_ context.Context) *plugin.Table {
 		Name:        "mongodbatlas_advanced_cluster",
 		Description: "",
 		List: &plugin.ListConfig{
-			Hydrate: listAtlasClusters,
+			Hydrate: listAtlasAdvancedClusters,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate:    getAtlasCluster,
+			Hydrate:    getAtlasAdvancedCluster,
 			KeyColumns: plugin.AllColumns([]string{"name"}),
 		},
 		Columns: []*plugin.Column{
