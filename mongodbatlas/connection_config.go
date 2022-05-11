@@ -8,6 +8,7 @@ import (
 type mongodbatlasConfig struct {
 	PublicKey  *string `cty:"public_key"`
 	PrivateKey *string `cty:"private_key"`
+	ProjectId  *string `cty:"project_id"`
 }
 
 var ConfigSchema = map[string]*schema.Attribute{
@@ -16,6 +17,10 @@ var ConfigSchema = map[string]*schema.Attribute{
 		Required: true,
 	},
 	"private_key": {
+		Type:     schema.TypeString,
+		Required: true,
+	},
+	"project_id": {
 		Type:     schema.TypeString,
 		Required: true,
 	},
