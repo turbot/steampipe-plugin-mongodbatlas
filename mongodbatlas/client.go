@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/http/httputil"
 	"os"
 
 	"github.com/mongodb-forks/digest"
@@ -83,5 +84,7 @@ func (lrt loggingRoundTripper) RoundTrip(req *http.Request) (res *http.Response,
 	if e != nil {
 		plugin.Logger(req.Context()).Error("Error: %v", e)
 	}
+	response, _ := httputil.DumpResponse(res, true)
+	plugin.Logger(req.Context()).Trace("Response: %v", string(response))
 	return res, e
 }
