@@ -11,7 +11,7 @@ import (
 func tableAtlasProject(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_project",
-		Description: "",
+		Description: "Returns details of the project configured in the connection config",
 		List: &plugin.ListConfig{
 			Hydrate: listAtlasProjects,
 		},
