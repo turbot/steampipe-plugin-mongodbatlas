@@ -97,7 +97,6 @@ func listAtlasProjectIpAccessList(ctx context.Context, d *plugin.QueryData, h *p
 		}
 
 		for _, projectIPAccessList := range projectIpAccessLists.Results {
-			plugin.Logger(ctx).Trace("element", projectIPAccessList.AwsSecurityGroup)
 			d.StreamListItem(ctx, projectIPAccessList)
 			// Context can be cancelled due to manual cancellation or the limit has been hit
 			if d.QueryStatus.RowsRemaining(ctx) == 0 {
@@ -151,7 +150,6 @@ func getAtlasProjectIpAccessList(ctx context.Context, d *plugin.QueryData, h *pl
 		listName = d.KeyColumnQuals["ip_address"].GetInetValue().GetAddr()
 	}
 
-	plugin.Logger(ctx).Trace("aflkjdflksdjfldjslfkdjslfkjdslfjdslkj", listName, d.KeyColumnQuals)
 	ipAccess, _, err := client.ProjectIPAccessList.Get(ctx, projectId, listName)
 	if err != nil {
 		return nil, err
