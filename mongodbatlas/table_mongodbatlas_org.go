@@ -12,7 +12,7 @@ import (
 func tableAtlasOrg(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_org",
-		Description: "",
+		Description: "Returns a single record containing the parent org of the project",
 		List: &plugin.ListConfig{
 			Hydrate:       listProjectParentOrg,
 			ParentHydrate: listAtlasProjects,
