@@ -12,7 +12,7 @@ import (
 func tableMongoDBAtlasX509Auth(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_x509_authentication_database_user",
-		Description: "",
+		Description: "Database Users can authenticate against databases using X.509 certificates. Certificates can be managed by Atlas or can be self-managed",
 		List: &plugin.ListConfig{
 			Hydrate:       listDatabaseUserX509Auth,
 			ParentHydrate: listAtlasDatabaseUsers,
@@ -87,10 +87,9 @@ func listDatabaseUserX509Auth(ctx context.Context, d *plugin.QueryData, h *plugi
 		itemsPerPage = *d.QueryContext.Limit
 	}
 
-	pageNumber := 1
 	projectId := config.ProjectId
 
-	x509Stuff, _, err := fetchX509AuthUser(ctx, client, pageNumber, itemsPerPage, dbUser.Username, *projectId)
+	x509Stuff, _, err := client.X509AuthDBUsers.GetUserCertificates(ctx, *projectId, dbUser.Username)
 	if err != nil {
 		plugin.Logger(ctx).Error("x509_authentication_database_user.listAtlasProjectIpAccessList", "query_error", err)
 		return nil, err
@@ -104,9 +103,4 @@ func listDatabaseUserX509Auth(ctx context.Context, d *plugin.QueryData, h *plugi
 	}
 
 	return nil, nil
-}
-
-func fetchX509AuthUser(ctx context.Context, client *mongodbatlas.Client, pageNumber int, itemsPerPage int64, username, projectId string) ([]mongodbatlas.UserCertificate, *mongodbatlas.Response, error) {
-	plugin.Logger(ctx).Trace("x509_authentication_database_user.listDatabaseUserX509Auth", "fetchX509AuthUser", projectId)
-	return client.X509AuthDBUsers.GetUserCertificates(ctx, projectId, username)
 }

@@ -6,20 +6,22 @@
 
 ### List all X.509 Certificates for a user
 ```sql
-select 
-    id,subject
-from 
-    mongodbatlas_x509_auth_database_user
+select
+   id,
+   subject 
+from
+   mongodbatlas_x509_authentication_database_user 
 where
-    username='billy'
+   username = 'billy'
 ```
 
 ### List all X.509 certificates expiring in 15 days
 ```sql
-select 
-    id,subject
-from 
-    mongodbatlas_x509_auth_database_user
+select
+   id,
+   subject 
+from
+   mongodbatlas_x509_authentication_database_user 
 where
-    not_after < (now() + INTERVAL '15 days')
+   not_after < (now() + INTERVAL '15 days')
 ```

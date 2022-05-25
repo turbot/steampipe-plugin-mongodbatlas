@@ -12,7 +12,7 @@ import (
 func tableMongoDBAtlasAdvancedCluster(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_advanced_cluster",
-		Description: "",
+		Description: "MongoDB Atlas Cluster is a NoSQL Database-as-a-Service offering in the public cloud (available in Microsoft Azure, Google Cloud Platform, Amazon Web Services).",
 		List: &plugin.ListConfig{
 			Hydrate: listAtlasAdvancedClusters,
 		},

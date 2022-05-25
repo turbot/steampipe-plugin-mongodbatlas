@@ -12,7 +12,7 @@ import (
 func tableMongoDBAtlasCustomDBRole(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_custom_db_role",
-		Description: "",
+		Description: "Custom roles supports a subset of MongoDB privilege actions. These are defined at the project level, for all clusters in the project.",
 		List: &plugin.ListConfig{
 			Hydrate: listAtlasCustomDBRoles,
 		},

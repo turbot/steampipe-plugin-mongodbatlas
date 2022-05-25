@@ -12,7 +12,7 @@ import (
 func tableMongoDBAtlasContainer(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "table_mongodbatlas_container",
-		Description: "",
+		Description: "Containers in a `mongodbatlas` project allows for cloud provider backed virtual private networking - dubbed as `container network peering` in MongoDB Atlas",
 		List: &plugin.ListConfig{
 			Hydrate:    listContainers,
 			KeyColumns: plugin.OptionalColumns([]string{"provider_name"}),
@@ -54,7 +54,6 @@ func tableMongoDBAtlasContainer(_ context.Context) *plugin.Table {
 				Name:        "network_name",
 				Description: "Unique identifier of the Network Peering connection in the Atlas project. Returns null until a peering connection is created.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("NetworkName").NullIfZero(),
 			},
 			{
 				Name:        "provisioned",
@@ -66,13 +65,11 @@ func tableMongoDBAtlasContainer(_ context.Context) *plugin.Table {
 				Name:        "region",
 				Description: "AWS region where the VCP resides or Azure region where the VNet resides.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Region").NullIfZero(),
 			},
 			{
 				Name:        "vnet_name",
 				Description: "Unique identifier of your Azure VNet. The value is null if there are no network peering connections in the container.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("NetworkName").NullIfZero(),
 			},
 			{
 				Name:        "vpc_id",
@@ -85,7 +82,7 @@ func tableMongoDBAtlasContainer(_ context.Context) *plugin.Table {
 				Name:        "title",
 				Description: "Title of the resource.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("AtlasCIDRBlock"),
+				Transform:   transform.FromField("NetworkName"),
 			},
 		},
 	}

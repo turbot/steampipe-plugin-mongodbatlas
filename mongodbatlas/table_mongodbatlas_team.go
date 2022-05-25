@@ -12,7 +12,7 @@ import (
 func tableMongoDBAtlasTeam(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "table_mongodbatlas_team",
-		Description: "",
+		Description: "Teams enable you to grant project access roles to multiple users. You add any number of organization users to a team.",
 		List: &plugin.ListConfig{
 			Hydrate:       listTeams,
 			ParentHydrate: listAtlasProjects,

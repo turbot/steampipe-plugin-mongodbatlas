@@ -12,7 +12,7 @@ import (
 func tableMongoDBAtlasProjectEvents(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_project_events",
-		Description: "",
+		Description: "Project Events allows you to list events for the configured project.",
 		List: &plugin.ListConfig{
 			Hydrate: listAtlasProjectEvents,
 		},

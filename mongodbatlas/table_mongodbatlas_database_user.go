@@ -12,7 +12,7 @@ import (
 func tableMongoDBAtlasDatabaseUser(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_database_user",
-		Description: "",
+		Description: "A database user has access to databases in a mongodb cluster.",
 		List: &plugin.ListConfig{
 			Hydrate: listAtlasDatabaseUsers,
 		},
