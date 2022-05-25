@@ -8,7 +8,8 @@ A database user has access to databases in a mongodb cluster.
 
 ```sql
 select 
-    id, name
+    id, 
+    name
 from 
     mongodbatlas_database_user
 ```

@@ -8,7 +8,8 @@ An organization is the container of the users, teams, projects etc.
 
 ```sql
 select
-  id,name
+  id,
+  name
 from
   mongodbatlas_org;
 ```

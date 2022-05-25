@@ -8,7 +8,9 @@ MongoDB Atlas Cluster is a NoSQL Database-as-a-Service offering in the public cl
 
 ```sql
 select
-    id,name,project_id
+    id,
+    name,
+    project_id
 from
     mongodbatlas_cluster
 ```

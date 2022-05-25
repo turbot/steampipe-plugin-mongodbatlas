@@ -7,7 +7,8 @@ Custom roles supports a subset of MongoDB privilege actions. These are defined a
 ### List all custom db roles
 ```sql
 select 
-    role_name,actions
+    role_name,
+    actions
 from 
     mongodbatlas_custom_db_role
 ```

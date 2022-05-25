@@ -16,7 +16,8 @@ This table lists a single entry which contains the details of the `project_id` c
 
 ```sql
 select
-  id,name
+  id,
+  name
 from
   mongodbatlas_project;
 ```
