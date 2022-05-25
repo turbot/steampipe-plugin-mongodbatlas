@@ -39,7 +39,7 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "auto_scaling",
-				Description: "TDB",
+				Description: "Collection of settings that configures auto-scaling information for the cluster.",
 				Type:        proto.ColumnType_JSON,
 			},
 			{
@@ -50,7 +50,7 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "cluster_type",
-				Description: "TDB",
+				Description: "Type of the cluster",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
