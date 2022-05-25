@@ -11,7 +11,7 @@ import (
 
 func tableAtlasX509Auth(_ context.Context) *plugin.Table {
 	return &plugin.Table{
-		Name:        "table_x509_authentication_database_user",
+		Name:        "mongodbatlas_x509_authentication_database_user",
 		Description: "",
 		List: &plugin.ListConfig{
 			Hydrate:       listDatabaseUserX509Auth,
