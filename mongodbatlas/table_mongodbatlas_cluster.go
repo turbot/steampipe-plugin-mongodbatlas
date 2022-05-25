@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
-func tableAtlasCluster(_ context.Context) *plugin.Table {
+func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_cluster",
 		Description: "",
@@ -23,15 +23,13 @@ func tableAtlasCluster(_ context.Context) *plugin.Table {
 		Columns: []*plugin.Column{
 			{
 				Name:        "id",
-				Description: "Unique identifier of the cluster.",
+				Description: "Unique 24-hexadecimal digit string that identifies the cluster.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("ID"),
 			},
 			{
 				Name:        "name",
 				Description: "The name of the cluster as it appears in Atlas.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Name"),
 			},
 			{
 				Name:        "project_id",
@@ -43,11 +41,10 @@ func tableAtlasCluster(_ context.Context) *plugin.Table {
 				Name:        "auto_scaling",
 				Description: "TDB",
 				Type:        proto.ColumnType_JSON,
-				Transform:   transform.FromField("AutoScaling"),
 			},
 			{
 				Name:        "bi_connector_config",
-				Description: "TDB",
+				Description: "Configuration settings applied to BI Connector for Atlas on this cluster.",
 				Type:        proto.ColumnType_JSON,
 				Transform:   transform.FromField("BiConnector"),
 			},
@@ -55,35 +52,32 @@ func tableAtlasCluster(_ context.Context) *plugin.Table {
 				Name:        "cluster_type",
 				Description: "TDB",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("ClusterType"),
 			},
 			{
 				Name:        "disk_size_gb",
-				Description: "TDB",
+				Description: "Capacity, in gigabytes, of the host's root volume. Increase this number to add capacity, up to a maximum possible value of 4096 (i.e., 4 TB). This value must be a positive number.",
 				Type:        proto.ColumnType_DOUBLE,
 				Transform:   transform.FromField("DiskSizeGB"),
 			},
 			{
 				Name:        "encryption_at_rest_provider",
-				Description: "TDB",
+				Description: "Cloud service provider that offers Encryption at Rest.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("EncryptionAtRestProvider"),
 			},
 			{
 				Name:        "labels",
-				Description: "TDB",
+				Description: "Collection of key-value pairs that tag and categorize the cluster. Each key and value has a maximum length of 255 characters.",
 				Type:        proto.ColumnType_JSON,
-				Transform:   transform.FromField("Labels"),
 			},
 			{
 				Name:        "mongo_db_version",
-				Description: "TDB",
+				Description: "Version of MongoDB that the cluster is running, in X.Y.Z format.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("MongoDBVersion"),
 			},
 			{
 				Name:        "mongodb_major_version",
-				Description: "TDB",
+				Description: "MongoDB Version of the cluster.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("MongoDBMajorVersion"),
 			},
@@ -106,76 +100,78 @@ func tableAtlasCluster(_ context.Context) *plugin.Table {
 				Transform:   transform.FromField("MongoURIWithOptions"),
 			},
 			{
-				Name:        "num_shards",
-				Description: "TDB",
-				Type:        proto.ColumnType_INT,
-				Transform:   transform.FromField("NumShards"),
+				Name: "num_shards",
+				Description: `Positive integer that specifies the number of shards for a sharded cluster.
+
+If this is set to 1, the cluster is a replica set.
+
+If this is set to 2 or higher, the cluster is a sharded cluster with the number of shards specified.`,
+				Type: proto.ColumnType_INT,
 			},
 			{
 				Name:        "paused",
-				Description: "TDB",
+				Description: "Flag that indicates whether the cluster has been paused.",
 				Type:        proto.ColumnType_BOOL,
-				Transform:   transform.FromField("Paused"),
 			},
 			{
 				Name:        "pit_enabled",
-				Description: "TDB",
+				Description: "Flag that indicates whether the cluster uses continuous cloud backups. More information is available at https://www.mongodb.com/docs/atlas/backup/cloud-backup/overview/#continuous-cloud-backups",
 				Type:        proto.ColumnType_BOOL,
-				Transform:   transform.FromField("PitEnabled"),
 			},
 			{
 				Name:        "provider_backup_enabled",
-				Description: "TDB",
+				Description: "Flag that indicates if the cluster uses Back Up Your Database Deployment for backups.",
 				Type:        proto.ColumnType_BOOL,
-				Transform:   transform.FromField("ProviderBackupEnabled"),
 			},
 			{
 				Name:        "provider_settings",
-				Description: "TDB",
+				Description: "Configuration for the provisioned hosts on which MongoDB runs. The available options are specific to the cloud service provider.",
 				Type:        proto.ColumnType_JSON,
-				Transform:   transform.FromField("ProviderSettings"),
 			},
 			{
 				Name:        "replication_factor",
 				Description: "Number of replica set members. Each member keeps a copy of your databases, providing high availability and data redundancy.",
 				Type:        proto.ColumnType_INT,
-				Transform:   transform.FromField("ReplicationFactor"),
 			},
 			{
 				Name:        "replication_spec",
 				Description: "Configuration of each region in the cluster. Each element in this object represents a region where Atlas deploys your cluster.",
 				Type:        proto.ColumnType_JSON,
-				Transform:   transform.FromField("ReplicationSpec"),
 			},
 			{
 				Name:        "replication_specs",
 				Description: "Configuration for each zone in a Global Cluster. Each object in this array represents a zone where Atlas deploys nodes for your Global Cluster.",
 				Type:        proto.ColumnType_JSON,
-				Transform:   transform.FromField("ReplicationSpecs"),
 			},
 			{
 				Name:        "srv_address",
-				Description: "TDB",
+				Description: "Connection string for connecting to the Atlas cluster. The +srv modifier forces the connection to use TLS. The mongoURI parameter lists additional options.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("SrvAddress"),
 			},
 			{
-				Name:        "state_name",
-				Description: "TDB",
-				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("StateName"),
+				Name: "state_name",
+				Description: `Condition in which the API resource finds the cluster when you called the resource. The resource returns one of the following states:
+
+		IDLE
+		CREATING
+		UPDATING
+		DELETING
+		DELETED
+		REPAIRING`,
+				Type: proto.ColumnType_STRING,
 			},
 			{
 				Name:        "connection_strings",
 				Description: "Set of connection strings that your applications use to connect to this cluster.",
 				Type:        proto.ColumnType_JSON,
-				Transform:   transform.FromField("ConnectionStrings"),
 			},
 			{
-				Name:        "version_release_system",
-				Description: "TDB",
-				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("VersionReleaseSystem"),
+				Name: "version_release_system",
+				Description: `Release cadence that Atlas uses for this cluster. Atlas supports:
+
+	CONTINUOUS: Atlas automatically updates your cluster to the latest major and rapid MongoDB releases as they become available.
+	LTS: Atlas automatically updates your cluster to subsequent patch releases of this MongoDB version. Atlas doesn't update your cluster to newer rapid or major MongoDB releases as they become available.`,
+				Type: proto.ColumnType_STRING,
 			},
 
 			// Steampipe standard columns

@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
-func tableAtlasServerlessInstance(_ context.Context) *plugin.Table {
+func tableMongoDBAtlasServerlessInstance(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_serverless_instance",
 		Description: "",

@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
-func tableAtlasCustomDBRole(_ context.Context) *plugin.Table {
+func tableMongoDBAtlasCustomDBRole(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_custom_db_role",
 		Description: "",

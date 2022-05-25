@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
-func tableAtlasX509Auth(_ context.Context) *plugin.Table {
+func tableMongoDBAtlasX509Auth(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_x509_authentication_database_user",
 		Description: "",

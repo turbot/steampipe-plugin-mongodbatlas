@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
-func tableAtlasProjectIpAccessList(_ context.Context) *plugin.Table {
+func tableMongoDBAtlasProjectIpAccessList(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_project_ip_access_list",
 		Description: "",

@@ -8,7 +8,7 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v3/plugin/transform"
 )
 
-func tableAtlasProject(_ context.Context) *plugin.Table {
+func tableMongoDBAtlasProject(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_project",
 		Description: "Returns details of the project configured in the connection config",
@@ -18,7 +18,7 @@ func tableAtlasProject(_ context.Context) *plugin.Table {
 		Columns: []*plugin.Column{
 			{
 				Name:        "id",
-				Description: "An unique identifier of the project.",
+				Description: "A unique identifier of the project.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("ID"),
 			},

@@ -26,19 +26,17 @@ func tableMongoDBAtlasContainer(_ context.Context) *plugin.Table {
 				Name:        "id",
 				Description: "Unique identifier for the team.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("ID"),
 			},
 			{
 				Name:        "provider_name",
 				Description: "Cloud provider for this Network Peering connection.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("ProviderName").NullIfZero(),
 			},
 			{
 				Name:        "atlas_cidr_block",
 				Description: "CIDR block that Atlas uses for your clusters.",
 				Type:        proto.ColumnType_CIDR,
-				Transform:   transform.FromField("AtlasCIDRBlock").NullIfZero(),
+				Transform:   transform.FromField("AtlasCIDRBlock"),
 			},
 			{
 				Name:        "azure_subscription_id",
@@ -80,7 +78,7 @@ func tableMongoDBAtlasContainer(_ context.Context) *plugin.Table {
 				Name:        "vpc_id",
 				Description: "Unique identifier of the project's Network Peering container.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("VPCID").NullIfZero(),
+				Transform:   transform.FromField("VPCID"),
 			},
 			// Steampipe standard columns
 			{

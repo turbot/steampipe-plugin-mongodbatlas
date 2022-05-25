@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
-func tableAtlasDatabaseUser(_ context.Context) *plugin.Table {
+func tableMongoDBAtlasDatabaseUser(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_database_user",
 		Description: "",
