@@ -17,7 +17,7 @@ func tableMongoDBAtlasCustomDBRole(_ context.Context) *plugin.Table {
 			Hydrate: listAtlasCustomDBRoles,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate:    getAtlasDatabaseUser,
+			Hydrate:    getAtlasCustomDBRole,
 			KeyColumns: plugin.AllColumns([]string{"role_name"}),
 		},
 		Columns: []*plugin.Column{

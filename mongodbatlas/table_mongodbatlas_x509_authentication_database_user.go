@@ -80,12 +80,6 @@ func listDatabaseUserX509Auth(ctx context.Context, d *plugin.QueryData, h *plugi
 		plugin.Logger(ctx).Error("x509_authentication_database_user.listAtlasProjectIpAccessList", "connection_error", err)
 		return nil, err
 	}
-	// Retrieve the list of incidents
-	itemsPerPage := int64(500)
-	// Reduce the basic request limit down if the user has only requested a small number of rows
-	if d.QueryContext.Limit != nil && *d.QueryContext.Limit < itemsPerPage {
-		itemsPerPage = *d.QueryContext.Limit
-	}
 
 	projectId := config.ProjectId
 
