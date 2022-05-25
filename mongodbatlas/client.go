@@ -17,7 +17,7 @@ import (
 // getMongodbAtlasClient :: returns a mongodbatlas client to perform API requests.
 func getMongodbAtlasClient(ctx context.Context, d *plugin.QueryData) (*mongodbatlas.Client, error) {
 	// Try to load client from cache
-	if cachedData, ok := d.ConnectionManager.Cache.Get(constants.CacheKeyMongodbAtlasClient); ok {
+	if cachedData, ok := d.ConnectionManager.Cache.Get(constants.CacheKeyMongoDbAtlasClient); ok {
 		return cachedData.(*mongodbatlas.Client), nil
 	}
 
@@ -31,7 +31,7 @@ func getMongodbAtlasClient(ctx context.Context, d *plugin.QueryData) (*mongodbat
 	client := createClient(ctx, publicKey, privateKey)
 
 	// save client in cache
-	d.ConnectionManager.Cache.Set(constants.CacheKeyMongodbAtlasClient, client)
+	d.ConnectionManager.Cache.Set(constants.CacheKeyMongoDbAtlasClient, client)
 
 	return client, nil
 }
