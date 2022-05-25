@@ -1,5 +1,5 @@
 package constants
 
 const (
-	CacheKeyMongodbAtlasClient = "mongodbatlas.client"
+	CacheKeyMongoDbAtlasClient = "mongodbatlas.client"
 )
