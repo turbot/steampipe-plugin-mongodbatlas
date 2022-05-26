@@ -2,7 +2,7 @@
 
 MongoDB Atlas Cluster is a NoSQL Database-as-a-Service offering in the public cloud (available in Microsoft Azure, Google Cloud Platform, Amazon Web Services).
 
-## Examples:
+## Examples
 
 ### List all MongoDB advanced clusters
 
