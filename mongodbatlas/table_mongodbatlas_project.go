@@ -26,13 +26,11 @@ func tableMongoDBAtlasProject(_ context.Context) *plugin.Table {
 				Name:        "name",
 				Description: "The name of the project.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Name"),
 			},
 			{
 				Name:        "cluster_count",
 				Description: "The number of Atlas clusters deployed in the project.",
 				Type:        proto.ColumnType_INT,
-				Transform:   transform.FromField("ClusterCount"),
 			},
 			{
 				Name:        "org_id",

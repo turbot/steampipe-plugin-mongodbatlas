@@ -27,32 +27,27 @@ func tableMongoDBAtlasX509Auth(_ context.Context) *plugin.Table {
 			{
 				Name:        "subject",
 				Description: "Fully distinguished name of the database user to which this certificate belongs. To learn more, see RFC 2253.",
-				Type:        proto.ColumnType_INT,
-				Transform:   transform.FromField("ID"),
+				Type:        proto.ColumnType_STRING,
 			},
 			{
 				Name:        "created_at",
 				Description: "Time when Atlas created this X.509 certificate.",
 				Type:        proto.ColumnType_TIMESTAMP,
-				Transform:   transform.FromField("CreatedAt"),
 			},
 			{
 				Name:        "not_after",
 				Description: "Time when this certificate expires.",
 				Type:        proto.ColumnType_TIMESTAMP,
-				Transform:   transform.FromField("NotAfter"),
 			},
 			{
 				Name:        "months_until_expiration",
 				Description: "A number of months that the created certificate is valid for before expiry, up to 24 months.default 3.",
 				Type:        proto.ColumnType_INT,
-				Transform:   transform.FromField("MonthsUntilExpiration"),
 			},
 			{
 				Name:        "certificate",
-				Description: "",
+				Description: "Certificate Data",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Certificate"),
 			},
 			{
 				Name:        "project_id",
@@ -77,7 +72,7 @@ func listDatabaseUserX509Auth(ctx context.Context, d *plugin.QueryData, h *plugi
 	config := GetConfig(d.Connection)
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("x509_authentication_database_user.listAtlasProjectIpAccessList", "connection_error", err)
+		plugin.Logger(ctx).Error("x509_authentication_database_user.listDatabaseUserX509Auth", "connection_error", err)
 		return nil, err
 	}
 
@@ -85,7 +80,7 @@ func listDatabaseUserX509Auth(ctx context.Context, d *plugin.QueryData, h *plugi
 
 	x509Stuff, _, err := client.X509AuthDBUsers.GetUserCertificates(ctx, *projectId, dbUser.Username)
 	if err != nil {
-		plugin.Logger(ctx).Error("x509_authentication_database_user.listAtlasProjectIpAccessList", "query_error", err)
+		plugin.Logger(ctx).Error("x509_authentication_database_user.listDatabaseUserX509Auth", "query_error", err)
 		return nil, err
 	}
 	for _, uc := range x509Stuff {

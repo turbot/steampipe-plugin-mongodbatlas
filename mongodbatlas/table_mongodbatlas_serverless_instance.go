@@ -31,7 +31,6 @@ func tableMongoDBAtlasServerlessInstance(_ context.Context) *plugin.Table {
 				Name:        "name",
 				Description: "The name of the cluster as it appears in Atlas.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Name"),
 			},
 			{
 				Name:        "project_id",
@@ -40,28 +39,25 @@ func tableMongoDBAtlasServerlessInstance(_ context.Context) *plugin.Table {
 				Transform:   transform.FromField("GroupID"),
 			},
 			{
-				Name:        "mongo_db_version",
-				Description: "TDB",
+				Name:        "mongodb_version",
+				Description: "Version of MongoDB that the serverless instance runs, in <major version>.<minor version> format.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("MongoDBVersion"),
 			},
 			{
 				Name:        "provider_settings",
-				Description: "TDB",
+				Description: "Configuration for the provisioned hosts on which MongoDB runs. The available options are specific to the cloud service provider.",
 				Type:        proto.ColumnType_JSON,
-				Transform:   transform.FromField("ProviderSettings"),
 			},
 			{
 				Name:        "state_name",
-				Description: "TDB",
+				Description: "Stage of deployment of this serverless instance when the resource made its request.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("StateName"),
 			},
 			{
 				Name:        "connection_strings",
 				Description: "Set of connection strings that your applications use to connect to this cluster.",
 				Type:        proto.ColumnType_JSON,
-				Transform:   transform.FromField("ConnectionStrings"),
 			},
 
 			// Steampipe standard columns

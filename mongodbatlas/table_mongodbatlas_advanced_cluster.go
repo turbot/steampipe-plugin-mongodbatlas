@@ -100,13 +100,9 @@ func tableMongoDBAtlasAdvancedCluster(_ context.Context) *plugin.Table {
 				Transform:   transform.FromField("MongoURIWithOptions"),
 			},
 			{
-				Name: "num_shards",
-				Description: `Positive integer that specifies the number of shards for a sharded cluster.
-
-If this is set to 1, the cluster is a replica set.
-
-If this is set to 2 or higher, the cluster is a sharded cluster with the number of shards specified.`,
-				Type: proto.ColumnType_INT,
+				Name:        "num_shards",
+				Description: "Positive integer that specifies the number of shards for a sharded cluster. If this is set to 1, the cluster is a replica set. If this is set to 2 or higher, the cluster is a sharded cluster with the number of shards specified.",
+				Type:        proto.ColumnType_INT,
 			},
 			{
 				Name:        "paused",
@@ -144,16 +140,9 @@ If this is set to 2 or higher, the cluster is a sharded cluster with the number 
 				Type:        proto.ColumnType_JSON,
 			},
 			{
-				Name: "state_name",
-				Description: `Condition in which the API resource finds the cluster when you called the resource. The resource returns one of the following states:
-
-		IDLE
-		CREATING
-		UPDATING
-		DELETING
-		DELETED
-		REPAIRING`,
-				Type: proto.ColumnType_STRING,
+				Name:        "state_name",
+				Description: "Condition in which the API resource finds the cluster when you called the resource. The resource returns one of the following states: IDLE, CREATING, UPDATING, DELETING, DELETED, REPAIRING.",
+				Type:        proto.ColumnType_STRING,
 			},
 			{
 				Name:        "connection_strings",
@@ -161,12 +150,9 @@ If this is set to 2 or higher, the cluster is a sharded cluster with the number 
 				Type:        proto.ColumnType_JSON,
 			},
 			{
-				Name: "version_release_system",
-				Description: `Release cadence that Atlas uses for this cluster. Atlas supports:
-
-	CONTINUOUS: Atlas automatically updates your cluster to the latest major and rapid MongoDB releases as they become available.
-	LTS: Atlas automatically updates your cluster to subsequent patch releases of this MongoDB version. Atlas doesn't update your cluster to newer rapid or major MongoDB releases as they become available.`,
-				Type: proto.ColumnType_STRING,
+				Name:        "version_release_system",
+				Description: `Release cadence that Atlas uses for this cluster.`,
+				Type:        proto.ColumnType_STRING,
 			},
 
 			// Steampipe standard columns

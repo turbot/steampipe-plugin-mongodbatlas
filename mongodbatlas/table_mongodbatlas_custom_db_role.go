@@ -25,26 +25,23 @@ func tableMongoDBAtlasCustomDBRole(_ context.Context) *plugin.Table {
 				Name:        "role_name",
 				Description: "The name of the role",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("RoleName"),
 			},
 			{
 				Name:        "actions",
 				Description: "Each object in the actions array represents an individual privilege action granted by the role.",
 				Type:        proto.ColumnType_JSON,
-				Transform:   transform.FromField("Actions"),
 			},
 			{
 				Name:        "inherited_roles",
 				Description: "Each object in the inherited_roles array represents a key-value pair indicating the inherited role and the database on which the role is granted.",
 				Type:        proto.ColumnType_JSON,
-				Transform:   transform.FromField("InheritedRoles"),
 			},
 			// Steampipe standard columns
 			{
 				Name:        "title",
 				Description: "Title of the resource.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Name"),
+				Transform:   transform.FromField("RoleName"),
 			},
 		},
 	}

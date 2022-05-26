@@ -25,13 +25,11 @@ func tableMongoDBAtlasDatabaseUser(_ context.Context) *plugin.Table {
 				Name:        "database_name",
 				Description: "Database against which the database user authenticates. Database users must provide both a username and authentication database to log into MongoDB.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("DatabaseName"),
 			},
 			{
 				Name:        "delete_after_date",
 				Description: "Timestamp in ISO 8601 date and time format in UTC after which Atlas deletes the temporary access list entry. Atlas returns this field if you specified an expiration date when creating this access list entry.",
 				Type:        proto.ColumnType_TIMESTAMP,
-				Transform:   transform.FromField("DeleteAfterDate").NullIfZero(),
 			},
 			{
 				Name:        "project_id",
@@ -43,25 +41,21 @@ func tableMongoDBAtlasDatabaseUser(_ context.Context) *plugin.Table {
 				Name:        "labels",
 				Description: "List that contains key-value pairs that tag and categorize the database user.",
 				Type:        proto.ColumnType_JSON,
-				Transform:   transform.FromField("Labels"),
 			},
 			{
 				Name:        "username",
 				Description: "Username needed to authenticate to the MongoDB database or collection.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Username"),
 			},
 			{
 				Name:        "roles",
 				Description: "List that contains key-value pairs that tag and categorize the database user.",
 				Type:        proto.ColumnType_JSON,
-				Transform:   transform.FromField("Roles").NullIfZero(),
 			},
 			{
 				Name:        "scopes",
 				Description: "List that contains key-value pairs that tag and categorize the database user.",
 				Type:        proto.ColumnType_JSON,
-				Transform:   transform.FromField("Scopes"),
 			},
 
 			// Steampipe standard columns

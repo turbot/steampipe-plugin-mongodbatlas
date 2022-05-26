@@ -28,13 +28,11 @@ func tableMongoDBAtlasOrg(_ context.Context) *plugin.Table {
 				Name:        "name",
 				Description: "Name of the organization.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Name"),
 			},
 			{
 				Name:        "is_deleted",
 				Description: "Flag indicating if the organization is deleted.",
 				Type:        proto.ColumnType_BOOL,
-				Transform:   transform.FromField("IsDeleted"),
 			},
 
 			// Steampipe standard columns

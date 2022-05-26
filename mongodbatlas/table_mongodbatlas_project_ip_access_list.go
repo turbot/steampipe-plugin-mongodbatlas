@@ -29,7 +29,6 @@ Atlas supports creating temporary IP access list entries that expire within a us
 				Name:        "aws_security_group",
 				Description: "Unique identifier of AWS security group in this access list entry.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("AwsSecurityGroup"),
 			},
 			{
 				Name:        "cidr_block",
@@ -41,13 +40,12 @@ Atlas supports creating temporary IP access list entries that expire within a us
 				Name:        "comment",
 				Description: "Comment associated with this access list entry.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Comment"),
 			},
 			{
 				Name:        "delete_after_date",
 				Description: "Timestamp in ISO 8601 date and time format in UTC after which Atlas deletes the temporary access list entry. Atlas returns this field if you specified an expiration date when creating this access list entry.",
 				Type:        proto.ColumnType_TIMESTAMP,
-				Transform:   transform.FromField("DeleteAfterDate").NullIfZero(),
+				Transform:   transform.FromGo().NullIfZero(),
 			},
 			{
 				Name:        "ip_address",
@@ -67,7 +65,7 @@ Atlas supports creating temporary IP access list entries that expire within a us
 				Name:        "title",
 				Description: "Title of the resource.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Name"),
+				Transform:   transform.FromField("CIDRBlock"),
 			},
 		},
 	}

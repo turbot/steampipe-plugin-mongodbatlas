@@ -24,7 +24,7 @@ func tableMongoDBAtlasContainer(_ context.Context) *plugin.Table {
 		Columns: []*plugin.Column{
 			{
 				Name:        "id",
-				Description: "Unique identifier for the team.",
+				Description: "Unique identifier for the container.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
