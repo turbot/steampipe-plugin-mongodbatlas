@@ -9,21 +9,23 @@ Atlas supports creating temporary IP access list entries that expire within a us
 ## Examples
 
 ### List all Ip Access Lists in the project
+
 ```sql
 select
-    ip_address,
-    cidr_block
+  ip_address,
+  cidr_block
 from
-    mongodbatlas_project_ip_access_list
+  mongodbatlas_project_ip_access_list
 ```
 
 ### List all IP Access Lists which belong to a specific `aws security group`
+
 ```sql
 select
-    ip_address,
-    cidr_block
+  ip_address,
+  cidr_block
 from
-    mongodbatlas_project_ip_access_list
-where 
-    aws_security_group='sgr_mongodbatlas_sec_group'
+  mongodbatlas_project_ip_access_list
+where
+  aws_security_group='sgr_mongodbatlas_sec_group'
 ```

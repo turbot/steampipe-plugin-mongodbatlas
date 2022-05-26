@@ -7,9 +7,9 @@ A database user has access to databases in a mongodb cluster.
 ### List all teams in the parent org
 
 ```sql
-select 
-    id, 
-    name
-from 
-    mongodbatlas_database_user
+select
+  id,
+  name
+from
+  mongodbatlas_database_user
 ```

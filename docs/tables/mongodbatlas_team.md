@@ -10,8 +10,8 @@ Needs `Organization Owner` access in the provided key pair.
 
 ```sql
 select 
-    id, 
-    name
+  id, 
+  name
 from 
-    mongodbatlas_team
+  mongodbatlas_team
 ```

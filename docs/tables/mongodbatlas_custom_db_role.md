@@ -2,7 +2,7 @@
 
 Custom roles supports a subset of MongoDB privilege actions. These are defined at the project level, for all clusters in the project.
 
-## Examples:
+## Examples
 
 ### List all custom db roles
 ```sql
