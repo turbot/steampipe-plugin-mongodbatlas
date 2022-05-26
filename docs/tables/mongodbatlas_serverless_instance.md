@@ -6,7 +6,7 @@ Serverless instances provide a limited feature set compared to full-blown cluste
 
 ## Examples
 
-### List all serverless instances in the project
+### Basic Info
 
 ```sql
 select

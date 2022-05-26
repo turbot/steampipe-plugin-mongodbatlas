@@ -4,7 +4,7 @@
 
 ## Examples
 
-### List all X.509 Certificates for a user
+### Basic Info
 
 ```sql
 select
@@ -26,4 +26,16 @@ from
   mongodbatlas_x509_authentication_database_user
 where
   not_after < (now() + INTERVAL '15 days')
+```
+
+### List all X.509 certificates expiring after 90 days
+
+```sql
+select
+  id,
+  subject
+from
+  mongodbatlas_x509_authentication_database_user
+where
+  not_after > (now() + INTERVAL '90 days')
 ```

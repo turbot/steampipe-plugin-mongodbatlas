@@ -8,7 +8,7 @@ Atlas supports creating temporary IP access list entries that expire within a us
 
 ## Examples
 
-### List all Ip Access Lists in the project
+### Basic Info
 
 ```sql
 select

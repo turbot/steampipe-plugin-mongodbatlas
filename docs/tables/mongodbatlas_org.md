@@ -4,7 +4,7 @@ An organization is the container of the users, teams, projects etc.
 
 ## Examples
 
-### List parent org
+### Basic Info
 
 ```sql
 select

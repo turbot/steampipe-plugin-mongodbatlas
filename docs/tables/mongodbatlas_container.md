@@ -4,7 +4,7 @@ Containers in a MongoDB Atlas project allows for cloud provider backed virtual p
 
 ## Examples
 
-### List all peered containers in the Project
+### Basic Info
 
 ```sql
 select

@@ -6,12 +6,12 @@ Needs `Organization Owner` access in the provided key pair.
 
 ## Example
 
-### List all teams in the parent org
+### Basic Info
 
 ```sql
-select 
-  id, 
+select
+  id,
   name
-from 
+from
   mongodbatlas_team
 ```
