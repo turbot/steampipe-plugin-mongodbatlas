@@ -13,7 +13,7 @@ This table lists a single entry which contains the details of the `project_id` c
 
 ## Examples
 
-### View configured project
+### Basic info
 
 ```sql
 select

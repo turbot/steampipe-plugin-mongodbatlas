@@ -4,7 +4,7 @@ MongoDB Atlas cluster is a NoSQL Database-as-a-Service offering in the public cl
 
 ## Examples
 
-### Basic Info
+### Basic info
 
 ```sql
 select

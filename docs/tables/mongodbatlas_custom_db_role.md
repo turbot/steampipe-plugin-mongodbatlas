@@ -6,7 +6,7 @@ Using custom MongoDB enables you to specify custom sets of actions which cannot 
 
 ## Examples
 
-### Basic Info
+### Basic info
 
 ```sql
 select
@@ -20,19 +20,19 @@ from
 
 ```sql
 select
-  *
+  role_name
 from
-  mongodbatlas_custom_db_role t,
-  jsonb_array_elements(t.actions) j
+  mongodbatlas_custom_db_role as t,
+  jsonb_array_elements(t.actions) as a
 where
-  j ->> 'action' = 'FIND'
+  a ->> 'action' = 'FIND'
 ```
 
 ### List roles which have at least one inhertied role
 
 ```sql
 select
-  *
+  role_name
 from
   mongodbatlas_custom_db_role
 where

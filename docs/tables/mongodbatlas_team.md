@@ -6,7 +6,7 @@ Needs `Organization Owner` access in the provided key pair.
 
 ## Example
 
-### Basic Info
+### Basic info
 
 ```sql
 select

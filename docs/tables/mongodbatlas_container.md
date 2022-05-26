@@ -4,7 +4,7 @@ Containers in a MongoDB Atlas project allows for cloud provider backed virtual p
 
 ## Examples
 
-### Basic Info
+### Basic info
 
 ```sql
 select
@@ -25,5 +25,5 @@ select
 from
   mongodbatlas_container
 where
-  provider_name='aws'
+  provider_name = 'aws'
 ```

@@ -6,7 +6,7 @@ Serverless instances provide a limited feature set compared to full-blown cluste
 
 ## Examples
 
-### Basic Info
+### Basic info
 
 ```sql
 select

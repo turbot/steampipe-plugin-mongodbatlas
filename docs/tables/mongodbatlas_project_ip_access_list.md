@@ -8,7 +8,7 @@ Atlas supports creating temporary IP access list entries that expire within a us
 
 ## Examples
 
-### Basic Info
+### Basic info
 
 ```sql
 select
@@ -18,7 +18,7 @@ from
   mongodbatlas_project_ip_access_list
 ```
 
-### List all IP Access Lists which belong to a specific `aws security group`
+### List all ip access lists which belong to a specific `aws security group`
 
 ```sql
 select
@@ -27,5 +27,5 @@ select
 from
   mongodbatlas_project_ip_access_list
 where
-  aws_security_group='sgr_mongodbatlas_sec_group'
+  aws_security_group = 'sgr_mongodbatlas_sec_group'
 ```

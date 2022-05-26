@@ -4,7 +4,7 @@
 
 ## Examples
 
-### Basic Info
+### Basic info
 
 ```sql
 select

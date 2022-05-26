@@ -4,7 +4,7 @@ Project Events allows you to list events for the configured project.
 
 ## Examples
 
-### Basic Info
+### Basic info
 
 ```sql
 select

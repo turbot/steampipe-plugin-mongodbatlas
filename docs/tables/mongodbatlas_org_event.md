@@ -4,7 +4,7 @@ Org Events allows you to list events for the parent organization of the configur
 
 ## Examples
 
-### Basic Info
+### Basic info
 
 ```sql
 select

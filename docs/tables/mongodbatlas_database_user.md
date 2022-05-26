@@ -2,9 +2,9 @@
 
 A database user has access to databases in a mongodb cluster. Each user has a set of roles that provide access to all databases in the project.
 
-## Example
+## Examples
 
-### Basic Info
+### Basic info
 
 ```sql
 select
@@ -18,7 +18,8 @@ from
 
 ```sql
 select
-  username
+  username,
+  j ->> 'databaseName' as database_name
 from
   mongodbatlas_database_user t,
   jsonb_array_elements(t.roles) j
