@@ -52,3 +52,16 @@ from
 where
   num_shards = 1
 ```
+
+### List clusters with provider backups disabled
+
+```sql
+select
+  name,
+  cluster_type,
+  provider_backup_enabled
+from
+  mongodbatlas_cluster
+where
+  provider_backup_enabled = false
+```
