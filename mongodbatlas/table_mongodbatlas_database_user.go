@@ -22,16 +22,10 @@ func tableMongoDBAtlasDatabaseUser(_ context.Context) *plugin.Table {
 		},
 		Columns: []*plugin.Column{
 			{
-				Name: "database_name",
-				Description: `Database against which the database user authenticates. Database users must provide both a username and authentication database to log into MongoDB.
-
-This resource returns:
-
-admin if the database user authenticates with SCRAM-SHA.
-
-If you don't set an authentication mechanism, Atlas defaults to SCRAM-SHA.`,
-				Type:      proto.ColumnType_STRING,
-				Transform: transform.FromField("DatabaseName"),
+				Name:        "database_name",
+				Description: "Database against which the database user authenticates. Database users must provide both a username and authentication database to log into MongoDB.",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("DatabaseName"),
 			},
 			{
 				Name:        "delete_after_date",
@@ -75,7 +69,7 @@ If you don't set an authentication mechanism, Atlas defaults to SCRAM-SHA.`,
 				Name:        "title",
 				Description: "Title of the resource.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Name"),
+				Transform:   transform.FromField("DatabaseName"),
 			},
 		},
 	}
