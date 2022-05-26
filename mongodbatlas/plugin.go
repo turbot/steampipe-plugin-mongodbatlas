@@ -23,7 +23,6 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"mongodbatlas_project":                           tableMongoDBAtlasProject(ctx),
 			"mongodbatlas_org":                               tableMongoDBAtlasOrg(ctx),
 			"mongodbatlas_cluster":                           tableMongoDBAtlasCluster(ctx),
-			"mongodbatlas_advanced_cluster":                  tableMongoDBAtlasAdvancedCluster(ctx),
 			"mongodbatlas_serverless_instance":               tableMongoDBAtlasServerlessInstance(ctx),
 			"mongodbatlas_project_ip_access_list":            tableMongoDBAtlasProjectIpAccessList(ctx),
 			"mongodbatlas_database_user":                     tableMongoDBAtlasDatabaseUser(ctx),
