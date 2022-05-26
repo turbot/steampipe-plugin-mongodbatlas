@@ -20,5 +20,5 @@ select
   id,
   name
 from
-  mongodbatlas_project;
+  mongodbatlas_project
 ```
