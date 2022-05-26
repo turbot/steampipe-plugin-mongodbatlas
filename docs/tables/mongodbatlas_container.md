@@ -1,6 +1,6 @@
 # Table: mongodbatlas_container
 
-Containers in a `mongodbatlas` project allows for cloud provider backed virtual private networking - dubbed as `container network peering` in MongoDB Atlas
+Containers in a MongoDB Atlas project allows for cloud provider backed virtual private networking - dubbed as `container network peering` in MongoDB Atlas.
 
 ## Examples:
 
