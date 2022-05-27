@@ -14,7 +14,7 @@ func tableMongoDBAtlasProjectEvents(_ context.Context) *plugin.Table {
 		Name:        "mongodbatlas_project_events",
 		Description: "Project Events allows you to list events for the configured project.",
 		List: &plugin.ListConfig{
-			Hydrate: listAtlasProjectEvents,
+			Hydrate: listMongoDBAtlasProjectEvents,
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getAtlasProjectEvent,
@@ -184,7 +184,7 @@ func tableMongoDBAtlasProjectEvents(_ context.Context) *plugin.Table {
 	}
 }
 
-func listAtlasProjectEvents(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listMongoDBAtlasProjectEvents(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	// Create client
 	config := GetConfig(d.Connection)
 	client, err := getMongodbAtlasClient(ctx, d)

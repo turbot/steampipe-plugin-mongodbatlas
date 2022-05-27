@@ -14,8 +14,8 @@ func tableMongoDBAtlasOrg(_ context.Context) *plugin.Table {
 		Name:        "mongodbatlas_org",
 		Description: "Returns a single record containing the parent org of the project",
 		List: &plugin.ListConfig{
-			Hydrate:       listProjectParentOrg,
-			ParentHydrate: listAtlasProjects,
+			Hydrate:       listMongoDBProjectParentOrg,
+			ParentHydrate: listMongoDBAtlasProjects,
 		},
 		Columns: []*plugin.Column{
 			{
@@ -46,7 +46,7 @@ func tableMongoDBAtlasOrg(_ context.Context) *plugin.Table {
 	}
 }
 
-func listProjectParentOrg(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listMongoDBProjectParentOrg(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	project := h.Item.(*mongodbatlas.Project)
 
 	client, err := getMongodbAtlasClient(ctx, d)

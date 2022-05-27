@@ -11,10 +11,10 @@ import (
 
 func tableMongoDBAtlasContainer(_ context.Context) *plugin.Table {
 	return &plugin.Table{
-		Name:        "table_mongodbatlas_container",
+		Name:        "mongodbatlas_container",
 		Description: "Containers in a project allows for cloud provider backed virtual private networking - dubbed as container network peering in MongoDB Atlas",
 		List: &plugin.ListConfig{
-			Hydrate:    listContainers,
+			Hydrate:    listMongoDBAtlasContainers,
 			KeyColumns: plugin.OptionalColumns([]string{"provider_name"}),
 		},
 		Get: &plugin.GetConfig{
@@ -88,7 +88,7 @@ func tableMongoDBAtlasContainer(_ context.Context) *plugin.Table {
 	}
 }
 
-func listContainers(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listMongoDBAtlasContainers(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	// Create client
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {

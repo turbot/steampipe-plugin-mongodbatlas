@@ -14,7 +14,7 @@ func tableMongoDBAtlasCustomDBRole(_ context.Context) *plugin.Table {
 		Name:        "mongodbatlas_custom_db_role",
 		Description: "Custom roles supports a subset of MongoDB privilege actions. These are defined at the project level, for all clusters in the project.",
 		List: &plugin.ListConfig{
-			Hydrate: listAtlasCustomDBRoles,
+			Hydrate: listMongoDBAtlasCustomDBRoles,
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getAtlasCustomDBRole,
@@ -47,7 +47,7 @@ func tableMongoDBAtlasCustomDBRole(_ context.Context) *plugin.Table {
 	}
 }
 
-func listAtlasCustomDBRoles(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listMongoDBAtlasCustomDBRoles(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	// Create client
 	config := GetConfig(d.Connection)
 	client, err := getMongodbAtlasClient(ctx, d)

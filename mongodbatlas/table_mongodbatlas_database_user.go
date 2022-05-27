@@ -14,7 +14,7 @@ func tableMongoDBAtlasDatabaseUser(_ context.Context) *plugin.Table {
 		Name:        "mongodbatlas_database_user",
 		Description: "A database user has access to databases in a mongodb cluster.",
 		List: &plugin.ListConfig{
-			Hydrate: listAtlasDatabaseUsers,
+			Hydrate: listMongoDBAtlasDatabaseUsers,
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getAtlasDatabaseUser,
@@ -69,7 +69,7 @@ func tableMongoDBAtlasDatabaseUser(_ context.Context) *plugin.Table {
 	}
 }
 
-func listAtlasDatabaseUsers(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listMongoDBAtlasDatabaseUsers(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	// Create client
 	config := GetConfig(d.Connection)
 	client, err := getMongodbAtlasClient(ctx, d)

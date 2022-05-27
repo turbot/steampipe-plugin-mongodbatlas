@@ -11,11 +11,11 @@ import (
 
 func tableMongoDBAtlasTeam(_ context.Context) *plugin.Table {
 	return &plugin.Table{
-		Name:        "table_mongodbatlas_team",
+		Name:        "mongodbatlas_team",
 		Description: "Teams enable you to grant project access roles to multiple users. You add any number of organization users to a team.",
 		List: &plugin.ListConfig{
-			Hydrate:       listTeams,
-			ParentHydrate: listAtlasProjects,
+			Hydrate:       listMongodDBAtlasTeams,
+			ParentHydrate: listMongoDBAtlasProjects,
 		},
 		Columns: []*plugin.Column{
 			{
@@ -41,7 +41,7 @@ func tableMongoDBAtlasTeam(_ context.Context) *plugin.Table {
 	}
 }
 
-func listTeams(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listMongodDBAtlasTeams(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	project := h.Item.(*mongodbatlas.Project)
 
 	// Create client

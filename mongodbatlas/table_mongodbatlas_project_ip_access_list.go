@@ -18,7 +18,7 @@ The IP access list applies to all database deployments in the project and can ha
 
 Atlas supports creating temporary IP access list entries that expire within a user-configurable 7-day period.`,
 		List: &plugin.ListConfig{
-			Hydrate: listAtlasProjectIpAccessList,
+			Hydrate: listMongoDBAtlasProjectIpAccessList,
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getAtlasProjectIpAccessList,
@@ -71,7 +71,7 @@ Atlas supports creating temporary IP access list entries that expire within a us
 	}
 }
 
-func listAtlasProjectIpAccessList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listMongoDBAtlasProjectIpAccessList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	// Create client
 	config := GetConfig(d.Connection)
 	client, err := getMongodbAtlasClient(ctx, d)

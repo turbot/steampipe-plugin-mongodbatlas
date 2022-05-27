@@ -14,7 +14,7 @@ func tableMongoDBAtlasServerlessInstance(_ context.Context) *plugin.Table {
 		Name:        "mongodbatlas_serverless_instance",
 		Description: "Serverless instances in MongoDB Atlas are instances which are billed on usage, rather than time like in normal clusters.",
 		List: &plugin.ListConfig{
-			Hydrate: listAtlasServerlessInstances,
+			Hydrate: listMongoDBAtlasServerlessInstances,
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getAtlasServerlessInstance,
@@ -71,7 +71,7 @@ func tableMongoDBAtlasServerlessInstance(_ context.Context) *plugin.Table {
 	}
 }
 
-func listAtlasServerlessInstances(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listMongoDBAtlasServerlessInstances(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	// Create client
 	config := GetConfig(d.Connection)
 	client, err := getMongodbAtlasClient(ctx, d)

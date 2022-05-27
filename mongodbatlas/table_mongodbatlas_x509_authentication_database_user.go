@@ -9,13 +9,13 @@ import (
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
-func tableMongoDBAtlasX509Auth(_ context.Context) *plugin.Table {
+func tableMongoDBAtlasX509AuthenticationDatabaseUser(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_x509_authentication_database_user",
 		Description: "Database Users can authenticate against databases using X.509 certificates. Certificates can be managed by Atlas or can be self-managed",
 		List: &plugin.ListConfig{
 			Hydrate:       listDatabaseUserX509Auth,
-			ParentHydrate: listAtlasDatabaseUsers,
+			ParentHydrate: listMongoDBAtlasDatabaseUsers,
 		},
 		Columns: []*plugin.Column{
 			{

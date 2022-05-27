@@ -14,8 +14,8 @@ func tableMongoDBAtlasOrgEvents(ctx context.Context) *plugin.Table {
 		Name:        "mongodbatlas_org_events",
 		Description: "Org Events allows you to list events for the parent organization of the configured project.",
 		List: &plugin.ListConfig{
-			Hydrate:       listAtlasOrgEvents,
-			ParentHydrate: listAtlasProjects,
+			Hydrate:       listMongoDBAtlasOrgEvents,
+			ParentHydrate: listMongoDBAtlasProjects,
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getAtlasOrgEvent,
@@ -185,7 +185,7 @@ func tableMongoDBAtlasOrgEvents(ctx context.Context) *plugin.Table {
 	}
 }
 
-func listAtlasOrgEvents(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listMongoDBAtlasOrgEvents(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	// Create client
 	project := h.Item.(*mongodbatlas.Project)
 	client, err := getMongodbAtlasClient(ctx, d)

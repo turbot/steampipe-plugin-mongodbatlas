@@ -26,7 +26,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"mongodbatlas_serverless_instance":               tableMongoDBAtlasServerlessInstance(ctx),
 			"mongodbatlas_project_ip_access_list":            tableMongoDBAtlasProjectIpAccessList(ctx),
 			"mongodbatlas_database_user":                     tableMongoDBAtlasDatabaseUser(ctx),
-			"mongodbatlas_x509_authentication_database_user": tableMongoDBAtlasX509Auth(ctx),
+			"mongodbatlas_x509_authentication_database_user": tableMongoDBAtlasX509AuthenticationDatabaseUser(ctx),
 			"mongodbatlas_custom_db_role":                    tableMongoDBAtlasCustomDBRole(ctx),
 			"mongodbatlas_project_event":                     tableMongoDBAtlasProjectEvents(ctx),
 			"mongodbatlas_org_event":                         tableMongoDBAtlasOrgEvents(ctx),

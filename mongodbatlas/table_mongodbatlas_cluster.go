@@ -14,7 +14,7 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 		Name:        "mongodbatlas_cluster",
 		Description: "MongoDB Atlas Cluster is a NoSQL Database-as-a-Service offering in the public cloud (available in Microsoft Azure, Google Cloud Platform, Amazon Web Services).",
 		List: &plugin.ListConfig{
-			Hydrate: listAtlasClusters,
+			Hydrate: listMongoDBAtlasClusters,
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getAtlasCluster,
@@ -171,7 +171,7 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 	}
 }
 
-func listAtlasClusters(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listMongoDBAtlasClusters(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	// Create client
 	config := GetConfig(d.Connection)
 	client, err := getMongodbAtlasClient(ctx, d)
