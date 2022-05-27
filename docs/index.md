@@ -5,7 +5,7 @@ icon_url: "/images/plugins/turbot/mongodbatlas.svg"
 brand_color: "#58AA50"
 display_name: MongoDB Atlas
 name: mongodbatlas
-description: Steampipe plugin for querying clusters, projects, teams and more from MongoDB Atlas.
+description: Steampipe plugin for querying clusters, users, teams and more from MongoDB Atlas.
 og_description: Query MongoDB Atlas with SQL! Open source CLI. No DB required.
 og_image: "/images/plugins/turbot/mongodbatlas-social-graphic.png"
 ---
