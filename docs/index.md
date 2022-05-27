@@ -1,16 +1,16 @@
 ---
 organization: Turbot
 category: ["SaaS"]
-icon_url: "/images/plugins/turbot/panos.svg"
-brand_color: "#FA582D"
+icon_url: "/images/plugins/turbot/mongodbatlas.svg"
+brand_color: "#58AA50"
 display_name: MongoDB Atlas
 name: mongodbatlas
-description: Steampipe plugin to query Mongodb Atlas.
+description: Steampipe plugin for querying clusters, projects, teams and more from MongoDB Atlas.
 og_description: Query MongoDB Atlas with SQL! Open source CLI. No DB required.
-og_image: "/images/plugins/turbot/panos-social-graphic.png"
+og_image: "/images/plugins/turbot/mongodbatlas-social-graphic.png"
 ---
 
-# PAN-OS + Steampipe
+# MongoDB Atlas + Steampipe
 
 [Steampipe](https://steampipe.io) is an open source CLI to instantly query cloud APIs using SQL.
 
@@ -19,9 +19,10 @@ og_image: "/images/plugins/turbot/panos-social-graphic.png"
 Example query:
 
 ```sql
-select 
-  id, name 
-from 
+select
+  id,
+  name
+from
   mongodbatlas_project
 ```
 
@@ -41,7 +42,7 @@ from
 
 ### Install
 
-Download and install the latest MongoDB Atlas Plugin
+Download and install the latest MongoDB Atlas plugin
 
 ```bash
 steampipe plugin install mongodbatlas
@@ -54,7 +55,7 @@ Installing the latest mongodbatlas plugin will create a config file (`~/.steampi
 ```hcl
 connection "mongodbatlas" {
   plugin = "mongodbatlas"
-  
+
   # Public and Private Key Pair with the necessary permissions
   # These can also be 'MONGODB_ATLAS_PUBLIC_KEY' and/or 'MONGODB_ATLAS_PRIVATE_KEY'
   # Consult https://www.mongodb.com/docs/atlas/configure-api-access/#create-an-api-key-in-an-organization on how to generate API keys
@@ -65,12 +66,23 @@ connection "mongodbatlas" {
 
 ```
 
-Environment variables are also available as an alternate configuration method:
+#### Configuring using Environment Variables
 
-- `MONGODB_ATLAS_PUBLIC_KEY`
-- `MONGODB_ATLAS_PRIVATE_KEY`
+The plugin uses the standard credential environment variables supported by the Atlas CLI
+
+```bash
+export MONGODB_ATLAS_PUBLIC_API_KEY=hnxxxxxo
+export MONGODB_ATLAS_PRIVATE_API_KEY=xxxxxxxx-xxxx-4xxx-axxx-dxxxxxxxd9fc
+```
+
+```hcl
+connection "mongodbatlas" {
+  plugin = "mongodbatlas"
+  project_id = "627278725xxxxxxxxxxxxxx0"
+}
+```
 
 ## Get involved
 
-- Open source: https://github.com/turbot/steampipe-plugin-panos
+- Open source: https://github.com/turbot/steampipe-plugin-mongodbatlas
 - Community: [Slack Channel](https://steampipe.io/community/join)
