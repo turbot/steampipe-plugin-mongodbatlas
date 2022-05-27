@@ -12,7 +12,7 @@ import (
 func tableMongoDBAtlasContainer(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "table_mongodbatlas_container",
-		Description: "Containers in a `mongodbatlas` project allows for cloud provider backed virtual private networking - dubbed as `container network peering` in MongoDB Atlas",
+		Description: "Containers in a project allows for cloud provider backed virtual private networking - dubbed as container network peering in MongoDB Atlas",
 		List: &plugin.ListConfig{
 			Hydrate:    listContainers,
 			KeyColumns: plugin.OptionalColumns([]string{"provider_name"}),
