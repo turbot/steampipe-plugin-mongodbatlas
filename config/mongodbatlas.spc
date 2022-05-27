@@ -6,5 +6,7 @@ connection "mongodbatlas" {
   # Consult https://www.mongodb.com/docs/atlas/configure-api-access/#create-an-api-key-in-an-organization on how to generate API keys
   # public_key = "public key here"
   # private_key = "private key here"
+  
+  # MongoDB Atlas Project ID. You can get this from the 'Project Settings' page in Atlas Cloud
   # project_id = "project ID"
 }
