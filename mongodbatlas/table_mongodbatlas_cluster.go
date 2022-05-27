@@ -83,19 +83,19 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "mongo_uri",
-				Description: "TDB",
+				Description: "Base connection string for the cluster.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("MongoURI"),
 			},
 			{
 				Name:        "mongo_uri_updated",
-				Description: "TDB",
+				Description: "Timestamp when the connection string was last updated. ",
 				Type:        proto.ColumnType_TIMESTAMP,
 				Transform:   transform.FromField("MongoURIUpdated"),
 			},
 			{
 				Name:        "mongo_uri_with_options",
-				Description: "TDB",
+				Description: "Connection string for connecting to the Atlas cluster. Includes the replicaSet, ssl, and authSource query parameters in the connection string with values appropriate for the cluster.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("MongoURIWithOptions"),
 			},
