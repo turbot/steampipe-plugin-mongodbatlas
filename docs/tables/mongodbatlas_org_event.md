@@ -25,5 +25,5 @@ select
 from
   mongodbatlas_org_event
 where
-  target_username='billy@example.com'
+  target_username = 'billy@example.com'
 ```

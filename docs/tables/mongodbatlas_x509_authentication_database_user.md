@@ -39,3 +39,15 @@ from
 where
   not_after > (now() + INTERVAL '90 days')
 ```
+
+### List all X.509 certificates expiring within 2 months
+
+```sql
+select
+  id,
+  subject
+from
+  mongodbatlas_x509_authentication_database_user
+where
+  months_until_expiration <= 2
+```

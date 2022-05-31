@@ -22,13 +22,13 @@ from
 select
   role_name
 from
-  mongodbatlas_custom_db_role as t,
+  mongodbatlas_custom_db_role as r,
   jsonb_array_elements(t.actions) as a
 where
   a ->> 'action' = 'FIND'
 ```
 
-### List roles which have at least one inhertied role
+### List roles which have at least one inherited role
 
 ```sql
 select

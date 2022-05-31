@@ -22,3 +22,16 @@ select
 from
   mongodbatlas_project
 ```
+
+### List projects with clusters beyond a threshold
+
+```sql
+select
+  id,
+  name,
+  cluster_count
+from
+  mongodbatlas_project
+where
+  cluster_count > 10
+```

@@ -21,10 +21,10 @@ from
 select
   id,
   name,
-  auto_scaling->>'autoIndexingEnabled' as autoscaling_autoindexingenabled,
-  auto_scaling->>'diskGBEnabled' as autoscaling_diskgb_enabled,
-  auto_scaling->'compute'->>'enabled' as autoscaling_compute_enabled,
-  auto_scaling->'compute'->>'scaleDownEnabled' as autoscaling_compute_scaledownenabled
+  auto_scaling->>'autoIndexingEnabled' as auto_scaling_auto_indexing_enabled,
+  auto_scaling->>'diskGBEnabled' as auto_scaling_diskgb_enabled,
+  auto_scaling->'compute'->>'enabled' as auto_scaling_compute_enabled,
+  auto_scaling->'compute'->>'scaleDownEnabled' as autos_caling_compute_scale_down_enabled
 from
   mongodbatlas_cluster
 ```
@@ -35,8 +35,8 @@ from
 select
   id,
   name,
-  connection_strings->>'standardSrv' as connstr_standardsrv,
-  connection_strings->>'standard' as connstr_standard
+  connection_strings->>'standardSrv' as conn_str_standard_srv,
+  connection_strings->>'standard' as conn_str_standard
 from
   mongodbatlas_cluster
 ```

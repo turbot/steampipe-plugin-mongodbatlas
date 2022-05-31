@@ -13,3 +13,15 @@ select
 from
   mongodbatlas_org;
 ```
+
+### List deleted
+
+```sql
+select
+  id,
+  name
+from
+  mongodbatlas_org
+where
+  is_deleted
+```

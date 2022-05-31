@@ -10,7 +10,8 @@ Serverless instances provide a limited feature set compared to full-blown cluste
 
 ```sql
 select
-  *
+  id,
+  name
 from
   mongodbatlas_serverless_instance
 ```
@@ -21,8 +22,8 @@ from
 select
   id,
   name,
-  connection_strings->>'standardSrv' as connstr_standardsrv,
-  connection_strings->>'standard' as connstr_standard
+  connection_strings->>'standardSrv' as conn_str_standard_srv,
+  connection_strings->>'standard' as conn_str_standard
 from
   mongodbatlas_cluster
 ```
