@@ -33,12 +33,12 @@ func tableMongoDBAtlasProject(_ context.Context) *plugin.Table {
 				Name:        "cluster_count",
 				Description: "The number of Atlas clusters deployed in the project.",
 				Type:        proto.ColumnType_INT,
+				Transform:   transform.FromGo(), // 0 is possible
 			},
 			{
 				Name:        "org_id",
 				Description: "The unique identifier of the Atlas organization to which the project belongs.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("OrgID"),
 			},
 
 			// Steampipe standard columns

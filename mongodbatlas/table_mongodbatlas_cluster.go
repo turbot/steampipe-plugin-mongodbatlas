@@ -86,7 +86,6 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 				Name:        "mongo_uri",
 				Description: "Base connection string for the cluster.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("MongoURI"),
 			},
 			{
 				Name:        "mongo_uri_updated",
