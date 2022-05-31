@@ -9,22 +9,33 @@ import (
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
+type rowContainer struct {
+	*mongodbatlas.Container
+	ProjectId string
+}
+
 func tableMongoDBAtlasContainer(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_container",
 		Description: "Containers in a project allows for cloud provider backed virtual private networking - dubbed as container network peering in MongoDB Atlas",
 		List: &plugin.ListConfig{
-			Hydrate:    listMongoDBAtlasContainers,
-			KeyColumns: plugin.OptionalColumns([]string{"provider_name"}),
+			Hydrate:       listMongoDBAtlasContainers,
+			ParentHydrate: listMongoDBAtlasProjects,
+			KeyColumns:    plugin.OptionalColumns([]string{"provider_name"}),
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getContainer,
-			KeyColumns: plugin.SingleColumn("id"),
+			KeyColumns: plugin.AllColumns([]string{"id", "project_id"}),
 		},
 		Columns: []*plugin.Column{
 			{
 				Name:        "id",
 				Description: "Unique identifier for the container.",
+				Type:        proto.ColumnType_STRING,
+			},
+			{
+				Name:        "project_id",
+				Description: "Unique identifier for the project.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
@@ -89,6 +100,7 @@ func tableMongoDBAtlasContainer(_ context.Context) *plugin.Table {
 }
 
 func listMongoDBAtlasContainers(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	project := h.Item.(*mongodbatlas.Project)
 	// Create client
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
@@ -103,11 +115,20 @@ func listMongoDBAtlasContainers(ctx context.Context, d *plugin.QueryData, h *plu
 	}
 
 	pageNumber := 1
-	projectId := GetConfig(d.Connection).ProjectId
 	providerName := d.KeyColumnQuals["provider_name"].GetStringValue()
 
 	for {
-		containers, response, err := fetchContainers(ctx, client, pageNumber, itemsPerPage, *projectId, providerName)
+		listOptions := &mongodbatlas.ContainersListOptions{
+			ListOptions: mongodbatlas.ListOptions{
+				PageNum:      pageNumber,
+				ItemsPerPage: int(itemsPerPage),
+			},
+		}
+		if len(providerName) > 0 {
+			listOptions.ProviderName = providerName
+		}
+
+		containers, response, err := client.Containers.List(ctx, project.ID, listOptions)
 
 		if err != nil {
 			plugin.Logger(ctx).Error("table_mongodbatlas_container.listContainers", "query_error", err)
@@ -115,22 +136,18 @@ func listMongoDBAtlasContainers(ctx context.Context, d *plugin.QueryData, h *plu
 		}
 
 		for _, container := range containers {
-			d.StreamListItem(ctx, container)
+			c := rowContainer{
+				Container: &container,
+				ProjectId: project.ID,
+			}
+			d.StreamListItem(ctx, c)
 			// Context can be cancelled due to manual cancellation or the limit has been hit
 			if d.QueryStatus.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
-		// find the next page
-		hasNextPage := false
 
-		for _, l := range response.Links {
-			if l.Rel == "next" {
-				hasNextPage = true
-			}
-		}
-
-		if hasNextPage {
+		if hasNextPage(response) {
 			pageNumber++
 			continue
 		}
@@ -141,35 +158,14 @@ func listMongoDBAtlasContainers(ctx context.Context, d *plugin.QueryData, h *plu
 	return nil, nil
 }
 
-func fetchContainers(ctx context.Context, client *mongodbatlas.Client, pageNumber int, itemsPerPage int64, projectId string, providerName string) ([]mongodbatlas.Container, *mongodbatlas.Response, error) {
-	plugin.Logger(ctx).Trace("table_mongodbatlas_container.listContainers", "fetchContainers", projectId)
-
-	if len(providerName) != 0 {
-		return client.Containers.List(ctx, projectId, &mongodbatlas.ContainersListOptions{
-			ProviderName: providerName,
-			ListOptions: mongodbatlas.ListOptions{
-				PageNum:      pageNumber,
-				ItemsPerPage: int(itemsPerPage),
-			},
-		})
-	} else {
-		return client.Containers.ListAll(ctx, projectId, &mongodbatlas.ListOptions{
-			PageNum:      pageNumber,
-			ItemsPerPage: int(itemsPerPage),
-		})
-	}
-
-}
-
 func getContainer(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	config := GetConfig(d.Connection)
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_project_events.getAtlasProjectEvents", "connection_error", err)
 		return nil, err
 	}
 
-	projectId := *config.ProjectId
+	projectId := d.KeyColumnQuals["project_id"].GetStringValue()
 	containerId := d.KeyColumnQuals["event_id"].GetStringValue()
 
 	event, _, err := client.Containers.Get(ctx, projectId, containerId)

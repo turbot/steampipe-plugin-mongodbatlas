@@ -14,18 +14,18 @@ func tableMongoDBAtlasServerlessInstance(_ context.Context) *plugin.Table {
 		Name:        "mongodbatlas_serverless_instance",
 		Description: "Serverless instances in MongoDB Atlas are instances which are billed on usage, rather than time like in normal clusters.",
 		List: &plugin.ListConfig{
-			Hydrate: listMongoDBAtlasServerlessInstances,
+			Hydrate:       listMongoDBAtlasServerlessInstances,
+			ParentHydrate: listMongoDBAtlasProjects,
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getAtlasServerlessInstance,
-			KeyColumns: plugin.AllColumns([]string{"name"}),
+			KeyColumns: plugin.AllColumns([]string{"name", "project_id"}),
 		},
 		Columns: []*plugin.Column{
 			{
 				Name:        "id",
 				Description: "Unique identifier of the cluster.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("ID"),
 			},
 			{
 				Name:        "name",
@@ -73,7 +73,7 @@ func tableMongoDBAtlasServerlessInstance(_ context.Context) *plugin.Table {
 
 func listMongoDBAtlasServerlessInstances(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	// Create client
-	config := GetConfig(d.Connection)
+	project := h.Item.(*mongodbatlas.Project)
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_serverless_instance.listAtlasServerlessInstances", "connection_error", err)
@@ -87,18 +87,20 @@ func listMongoDBAtlasServerlessInstances(ctx context.Context, d *plugin.QueryDat
 	}
 
 	pageNumber := 1
-	projectId := config.ProjectId
 
 	for {
-		advancedClustersResponse, _, err := fetchServerlessInstancesPage(ctx, client, pageNumber, itemsPerPage, *projectId)
-		plugin.Logger(ctx).Trace("mongodbatlas_serverless_instance.listAtlasServerlessInstances", "cluster length", len(advancedClustersResponse.Results))
+		serverlessInstances, response, err := client.ServerlessInstances.List(ctx, project.ID, &mongodbatlas.ListOptions{
+			PageNum:      pageNumber,
+			ItemsPerPage: int(itemsPerPage),
+		})
+		plugin.Logger(ctx).Trace("mongodbatlas_serverless_instance.listAtlasServerlessInstances", "cluster length", len(serverlessInstances.Results))
 
 		if err != nil {
 			plugin.Logger(ctx).Error("mongodbatlas_serverless_instance.listAtlasServerlessInstances", "query_error", err)
 			return nil, err
 		}
 
-		for _, cluster := range advancedClustersResponse.Results {
+		for _, cluster := range serverlessInstances.Results {
 			d.StreamListItem(ctx, cluster)
 
 			// Context can be cancelled due to manual cancellation or the limit has been hit
@@ -106,16 +108,8 @@ func listMongoDBAtlasServerlessInstances(ctx context.Context, d *plugin.QueryDat
 				return nil, nil
 			}
 		}
-		// find the next page
-		hasNextPage := false
 
-		for _, l := range advancedClustersResponse.Links {
-			if l.Rel == "next" {
-				hasNextPage = true
-			}
-		}
-
-		if hasNextPage {
+		if hasNextPage(response) {
 			pageNumber++
 			continue
 		}
@@ -126,25 +120,16 @@ func listMongoDBAtlasServerlessInstances(ctx context.Context, d *plugin.QueryDat
 	return nil, nil
 }
 
-func fetchServerlessInstancesPage(ctx context.Context, client *mongodbatlas.Client, pageNumber int, itemsPerPage int64, projectId string) (*mongodbatlas.ClustersResponse, *mongodbatlas.Response, error) {
-	plugin.Logger(ctx).Trace("mongodbatlas_serverless_instance.listAtlasServerlessInstances", "fetchServerlessInstancesPage", projectId)
-	return client.ServerlessInstances.List(ctx, projectId, &mongodbatlas.ListOptions{
-		PageNum:      pageNumber,
-		ItemsPerPage: int(itemsPerPage),
-	})
-}
-
 func getAtlasServerlessInstance(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	config := GetConfig(d.Connection)
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_serverless_instance.getAtlasServerlessInstances", "connection_error", err)
 		return nil, err
 	}
-	projectId := config.ProjectId
 	clusterName := d.KeyColumnQuals["name"].GetStringValue()
+	projectId := d.KeyColumnQuals["project_id"].GetStringValue()
 
-	cluster, _, err := client.ServerlessInstances.Get(ctx, *projectId, clusterName)
+	cluster, _, err := client.ServerlessInstances.Get(ctx, projectId, clusterName)
 	if err != nil {
 		return nil, err
 	}

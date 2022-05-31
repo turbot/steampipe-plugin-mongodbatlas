@@ -60,45 +60,29 @@ func listMongodDBAtlasTeams(ctx context.Context, d *plugin.QueryData, h *plugin.
 	pageNumber := 1
 
 	for {
-		teams, response, err := fetchTeams(ctx, client, pageNumber, itemsPerPage, project.OrgID)
+		teams, response, err := client.Teams.List(ctx, project.OrgID, &mongodbatlas.ListOptions{
+			PageNum:      pageNumber,
+			ItemsPerPage: int(itemsPerPage),
+		})
 
 		if err != nil {
 			plugin.Logger(ctx).Error("table_mongodbatlas_team.listTeams", "query_error", err)
 			return nil, err
 		}
 
-		for _, databaseUser := range teams {
-			d.StreamListItem(ctx, databaseUser)
+		for _, team := range teams {
+			d.StreamListItem(ctx, team)
 			// Context can be cancelled due to manual cancellation or the limit has been hit
 			if d.QueryStatus.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
-		// find the next page
-		hasNextPage := false
-
-		for _, l := range response.Links {
-			if l.Rel == "next" {
-				hasNextPage = true
-			}
-		}
-
-		if hasNextPage {
+		if hasNextPage(response) {
 			pageNumber++
 			continue
 		}
-
 		break
 	}
 
 	return nil, nil
-}
-
-func fetchTeams(ctx context.Context, client *mongodbatlas.Client, pageNumber int, itemsPerPage int64, orgId string) ([]mongodbatlas.Team, *mongodbatlas.Response, error) {
-	plugin.Logger(ctx).Trace("table_mongodbatlas_team.listTeams", "fetchTeams", orgId)
-
-	return client.Teams.List(ctx, orgId, &mongodbatlas.ListOptions{
-		PageNum:      pageNumber,
-		ItemsPerPage: int(itemsPerPage),
-	})
 }

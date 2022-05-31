@@ -14,11 +14,12 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 		Name:        "mongodbatlas_cluster",
 		Description: "MongoDB Atlas Cluster is a NoSQL Database-as-a-Service offering in the public cloud (available in Microsoft Azure, Google Cloud Platform, Amazon Web Services).",
 		List: &plugin.ListConfig{
-			Hydrate: listMongoDBAtlasClusters,
+			Hydrate:       listMongoDBAtlasClusters,
+			ParentHydrate: listMongoDBAtlasProjects,
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getAtlasCluster,
-			KeyColumns: plugin.AllColumns([]string{"name"}),
+			KeyColumns: plugin.AllColumns([]string{"name", "project_id"}),
 		},
 		Columns: []*plugin.Column{
 			{
@@ -172,8 +173,8 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 }
 
 func listMongoDBAtlasClusters(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	project := h.Item.(*mongodbatlas.Project)
 	// Create client
-	config := GetConfig(d.Connection)
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_cluster.listAtlasClusters", "connection_error", err)
@@ -187,18 +188,17 @@ func listMongoDBAtlasClusters(ctx context.Context, d *plugin.QueryData, h *plugi
 	}
 
 	pageNumber := 1
-	projectId := config.ProjectId
 
 	for {
-		clusters, _, err := fetchClustersPage(ctx, client, pageNumber, itemsPerPage, *projectId)
-		plugin.Logger(ctx).Trace("mongodbatlas_cluster.listAtlasCluster", "cluster length", len(clusters))
+		clusters, response, err := client.Clusters.List(ctx, project.ID, &mongodbatlas.ListOptions{
+			PageNum:      pageNumber,
+			ItemsPerPage: int(itemsPerPage),
+		})
 
 		if err != nil {
 			plugin.Logger(ctx).Error("mongodbatlas_cluster.listAtlasClusters", "query_error", err)
 			return nil, err
 		}
-
-		hasNextPage := false
 
 		for _, cluster := range clusters {
 			d.StreamListItem(ctx, cluster)
@@ -207,20 +207,9 @@ func listMongoDBAtlasClusters(ctx context.Context, d *plugin.QueryData, h *plugi
 			if d.QueryStatus.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
-
-			// find the next page
-			// for some odd reason, the SDK puts this in the array element
-			if !hasNextPage {
-				for _, link := range cluster.Links {
-					if link.Rel == "next" {
-						hasNextPage = true
-						break
-					}
-				}
-			}
 		}
 
-		if hasNextPage {
+		if hasNextPage(response) {
 			pageNumber++
 			continue
 		}
@@ -231,25 +220,16 @@ func listMongoDBAtlasClusters(ctx context.Context, d *plugin.QueryData, h *plugi
 	return nil, nil
 }
 
-func fetchClustersPage(ctx context.Context, client *mongodbatlas.Client, pageNumber int, itemsPerPage int64, projectId string) ([]mongodbatlas.Cluster, *mongodbatlas.Response, error) {
-	plugin.Logger(ctx).Trace("mongodbatlas_cluster.listAtlasCluster", "project_clusters", projectId)
-	return client.Clusters.List(ctx, projectId, &mongodbatlas.ListOptions{
-		PageNum:      pageNumber,
-		ItemsPerPage: int(itemsPerPage),
-	})
-}
-
 func getAtlasCluster(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	config := GetConfig(d.Connection)
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_cluster.getAtlasCluster", "connection_error", err)
 		return nil, err
 	}
-	projectId := config.ProjectId
+	projectId := d.KeyColumnQuals["project_id"].GetStringValue()
 	clusterName := d.KeyColumnQuals["name"].GetStringValue()
 
-	cluster, _, err := client.Clusters.Get(ctx, *projectId, clusterName)
+	cluster, _, err := client.Clusters.Get(ctx, projectId, clusterName)
 	if err != nil {
 		return nil, err
 	}

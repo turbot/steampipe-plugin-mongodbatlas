@@ -5,6 +5,7 @@ import (
 
 	"github.com/turbot/steampipe-plugin-sdk/v3/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v3/plugin/transform"
+	"go.mongodb.org/atlas/mongodbatlas"
 )
 
 const pluginName = "steampipe-plugin-mongodbatlas"
@@ -36,4 +37,13 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 	}
 
 	return p
+}
+
+func hasNextPage(r *mongodbatlas.Response) bool {
+	for _, l := range r.Links {
+		if l.Rel == "next" {
+			return true
+		}
+	}
+	return false
 }

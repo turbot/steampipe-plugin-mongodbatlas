@@ -14,8 +14,8 @@ func tableMongoDBAtlasOrg(_ context.Context) *plugin.Table {
 		Name:        "mongodbatlas_org",
 		Description: "Returns a single record containing the parent org of the project",
 		List: &plugin.ListConfig{
-			Hydrate:       listMongoDBProjectParentOrg,
-			ParentHydrate: listMongoDBAtlasProjects,
+			Hydrate:    listMongoDBAtlasOrg,
+			KeyColumns: plugin.OptionalColumns([]string{"id"}),
 		},
 		Columns: []*plugin.Column{
 			{
@@ -46,20 +46,56 @@ func tableMongoDBAtlasOrg(_ context.Context) *plugin.Table {
 	}
 }
 
-func listMongoDBProjectParentOrg(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	project := h.Item.(*mongodbatlas.Project)
-
+func listMongoDBAtlasOrg(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_org.listProjectParentOrg", "connection_error", err)
 		return nil, err
 	}
 
-	org, _, err := client.Organizations.Get(ctx, project.OrgID)
-	if err != nil {
-		return nil, err
+	if len(d.KeyColumnQuals["id"].GetStringValue()) != 0 {
+		org, _, err := client.Organizations.Get(ctx, d.KeyColumnQuals["id"].GetStringValue())
+		if err != nil {
+			return nil, err
+		}
+		d.StreamListItem(ctx, org)
+		return nil, nil
 	}
-	d.StreamListItem(ctx, org)
+
+	// Retrieve the list of incidents
+	itemsPerPage := int64(500)
+	// Reduce the basic request limit down if the user has only requested a small number of rows
+	if d.QueryContext.Limit != nil && *d.QueryContext.Limit < itemsPerPage {
+		itemsPerPage = *d.QueryContext.Limit
+	}
+
+	pageNumber := 1
+
+	for {
+		orgs, response, err := client.Organizations.List(ctx, &mongodbatlas.OrganizationsListOptions{
+			ListOptions: mongodbatlas.ListOptions{
+				PageNum:      pageNumber,
+				ItemsPerPage: int(itemsPerPage),
+			},
+		})
+		if err != nil {
+			return nil, err
+		}
+		for _, org := range orgs.Results {
+			d.StreamListItem(ctx, org)
+			// Context can be cancelled due to manual cancellation or the limit has been hit
+			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+				return nil, nil
+			}
+		}
+
+		if hasNextPage(response) {
+			pageNumber++
+			continue
+		}
+
+		break
+	}
 
 	return nil, nil
 }

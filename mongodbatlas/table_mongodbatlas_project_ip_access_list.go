@@ -2,6 +2,7 @@ package mongodbatlas
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/turbot/steampipe-plugin-sdk/v3/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v3/plugin"
@@ -18,11 +19,29 @@ The IP access list applies to all database deployments in the project and can ha
 
 Atlas supports creating temporary IP access list entries that expire within a user-configurable 7-day period.`,
 		List: &plugin.ListConfig{
-			Hydrate: listMongoDBAtlasProjectIpAccessList,
+			Hydrate:       listMongoDBAtlasProjectIpAccessList,
+			ParentHydrate: listMongoDBAtlasProjects,
 		},
 		Get: &plugin.GetConfig{
-			Hydrate:    getAtlasProjectIpAccessList,
-			KeyColumns: plugin.AnyColumn([]string{"aws_security_group", "cidr_block", "ip_address"}),
+			Hydrate: getAtlasProjectIpAccessList,
+			KeyColumns: []*plugin.KeyColumn{
+				{
+					Name:    "project_id",
+					Require: plugin.Required,
+				},
+				{
+					Name:    "aws_security_group",
+					Require: plugin.Optional,
+				},
+				{
+					Name:    "cidr_block",
+					Require: plugin.Optional,
+				},
+				{
+					Name:    "ip_address",
+					Require: plugin.Optional,
+				},
+			},
 		},
 		Columns: []*plugin.Column{
 			{
@@ -73,7 +92,7 @@ Atlas supports creating temporary IP access list entries that expire within a us
 
 func listMongoDBAtlasProjectIpAccessList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	// Create client
-	config := GetConfig(d.Connection)
+	project := h.Item.(*mongodbatlas.Project)
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_project_ip_access_list.listAtlasProjectIpAccessList", "connection_error", err)
@@ -87,10 +106,13 @@ func listMongoDBAtlasProjectIpAccessList(ctx context.Context, d *plugin.QueryDat
 	}
 
 	pageNumber := 1
-	projectId := config.ProjectId
 
 	for {
-		projectIpAccessLists, _, err := fetchProjectIPAccessListPage(ctx, client, pageNumber, itemsPerPage, *projectId)
+		projectIpAccessLists, response, err := client.ProjectIPAccessList.List(ctx, project.ID, &mongodbatlas.ListOptions{
+			PageNum:      pageNumber,
+			ItemsPerPage: int(itemsPerPage),
+		})
+
 		plugin.Logger(ctx).Trace("mongodbatlas_project_ip_access_list.listAtlasProjectIpAccessList", "cluster length", len(projectIpAccessLists.Results))
 
 		if err != nil {
@@ -105,16 +127,8 @@ func listMongoDBAtlasProjectIpAccessList(ctx context.Context, d *plugin.QueryDat
 				return nil, nil
 			}
 		}
-		// find the next page
-		hasNextPage := false
 
-		for _, l := range projectIpAccessLists.Links {
-			if l.Rel == "next" {
-				hasNextPage = true
-			}
-		}
-
-		if hasNextPage {
+		if hasNextPage(response) {
 			pageNumber++
 			continue
 		}
@@ -125,22 +139,14 @@ func listMongoDBAtlasProjectIpAccessList(ctx context.Context, d *plugin.QueryDat
 	return nil, nil
 }
 
-func fetchProjectIPAccessListPage(ctx context.Context, client *mongodbatlas.Client, pageNumber int, itemsPerPage int64, projectId string) (*mongodbatlas.ProjectIPAccessLists, *mongodbatlas.Response, error) {
-	plugin.Logger(ctx).Trace("mongodbatlas_project_ip_access_list.listAtlasProjectIpAccessList", "fetchProjectIPAccessListPage", projectId)
-	return client.ProjectIPAccessList.List(ctx, projectId, &mongodbatlas.ListOptions{
-		PageNum:      pageNumber,
-		ItemsPerPage: int(itemsPerPage),
-	})
-}
-
 func getAtlasProjectIpAccessList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	config := GetConfig(d.Connection)
+
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_project_ip_access_list.getAtlasProjectIpAccessList", "connection_error", err)
 		return nil, err
 	}
-	projectId := *config.ProjectId
+	projectId := d.KeyColumnQuals["project_id"].GetStringValue()
 
 	listName := ""
 
@@ -150,6 +156,8 @@ func getAtlasProjectIpAccessList(ctx context.Context, d *plugin.QueryData, h *pl
 		listName = d.KeyColumnQuals["cidr_block"].GetInetValue().GetCidr()
 	} else if len(d.KeyColumnQuals["ip_address"].GetInetValue().GetAddr()) != 0 {
 		listName = d.KeyColumnQuals["ip_address"].GetInetValue().GetAddr()
+	} else {
+		return nil, fmt.Errorf("one of 'aws_security_group', 'cidr_block' or 'ip_address' is required")
 	}
 
 	ipAccess, _, err := client.ProjectIPAccessList.Get(ctx, projectId, listName)

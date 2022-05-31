@@ -15,7 +15,7 @@ func tableMongoDBAtlasX509AuthenticationDatabaseUser(_ context.Context) *plugin.
 		Description: "Database Users can authenticate against databases using X.509 certificates. Certificates can be managed by Atlas or can be self-managed",
 		List: &plugin.ListConfig{
 			Hydrate:       listDatabaseUserX509Auth,
-			ParentHydrate: listMongoDBAtlasDatabaseUsers,
+			ParentHydrate: listMongoDBAtlasProjects,
 		},
 		Columns: []*plugin.Column{
 			{
@@ -67,28 +67,53 @@ func tableMongoDBAtlasX509AuthenticationDatabaseUser(_ context.Context) *plugin.
 }
 
 func listDatabaseUserX509Auth(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	dbUser := h.Item.(mongodbatlas.DatabaseUser)
+	project := h.Item.(*mongodbatlas.Project)
+
 	// Create client
-	config := GetConfig(d.Connection)
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("x509_authentication_database_user.listDatabaseUserX509Auth", "connection_error", err)
 		return nil, err
 	}
 
-	projectId := config.ProjectId
+	projectId := project.ID
+	dbUsersPageNumber := 1
 
-	x509Stuff, _, err := client.X509AuthDBUsers.GetUserCertificates(ctx, *projectId, dbUser.Username)
-	if err != nil {
-		plugin.Logger(ctx).Error("x509_authentication_database_user.listDatabaseUserX509Auth", "query_error", err)
-		return nil, err
-	}
-	for _, uc := range x509Stuff {
-		d.StreamListItem(ctx, uc)
-		// Context can be cancelled due to manual cancellation or the limit has been hit
-		if d.QueryStatus.RowsRemaining(ctx) == 0 {
-			return nil, nil
+	for {
+
+		// get a page of database users for this project
+		databaseUsers, response, err := client.DatabaseUsers.List(ctx, project.ID, &mongodbatlas.ListOptions{
+			PageNum:      dbUsersPageNumber,
+			ItemsPerPage: int(500),
+		})
+
+		if err != nil {
+			return nil, err
 		}
+
+		// get the certificates for each database user
+		for _, dbUser := range databaseUsers {
+			x509Stuff, _, err := client.X509AuthDBUsers.GetUserCertificates(ctx, projectId, dbUser.Username)
+			if err != nil {
+				plugin.Logger(ctx).Error("x509_authentication_database_user.listDatabaseUserX509Auth", "query_error", err)
+				return nil, err
+			}
+			for _, uc := range x509Stuff {
+				d.StreamListItem(ctx, uc)
+				// Context can be cancelled due to manual cancellation or the limit has been hit
+				if d.QueryStatus.RowsRemaining(ctx) == 0 {
+					return nil, nil
+				}
+			}
+		}
+
+		if hasNextPage(response) {
+			dbUsersPageNumber++
+			continue
+		}
+
+		break
+
 	}
 
 	return nil, nil

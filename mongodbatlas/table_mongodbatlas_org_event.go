@@ -2,6 +2,7 @@ package mongodbatlas
 
 import (
 	"context"
+	"time"
 
 	"github.com/turbot/steampipe-plugin-sdk/v3/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v3/plugin"
@@ -15,11 +16,18 @@ func tableMongoDBAtlasOrgEvents(ctx context.Context) *plugin.Table {
 		Description: "Org Events allows you to list events for the parent organization of the configured project.",
 		List: &plugin.ListConfig{
 			Hydrate:       listMongoDBAtlasOrgEvents,
-			ParentHydrate: listMongoDBAtlasProjects,
+			ParentHydrate: listMongoDBAtlasOrg,
+			KeyColumns: []*plugin.KeyColumn{
+				{
+					Name:      "created",
+					Require:   plugin.Optional,
+					Operators: []string{">", ">=", "=", "<", "<="},
+				},
+			},
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getAtlasOrgEvent,
-			KeyColumns: plugin.SingleColumn("alert_id"),
+			KeyColumns: plugin.AllColumns([]string{"alert_id", "org_id"}),
 		},
 		Columns: []*plugin.Column{
 			{
@@ -187,7 +195,7 @@ func tableMongoDBAtlasOrgEvents(ctx context.Context) *plugin.Table {
 
 func listMongoDBAtlasOrgEvents(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	// Create client
-	project := h.Item.(*mongodbatlas.Project)
+	org := h.Item.(*mongodbatlas.Organization)
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_org_events.listAtlasOrgEvents", "connection_error", err)
@@ -201,33 +209,49 @@ func listMongoDBAtlasOrgEvents(ctx context.Context, d *plugin.QueryData, h *plug
 	}
 
 	pageNumber := 1
-	orgId := project.OrgID
+	orgId := org.ID
 
 	for {
-		projectEvents, _, err := fetchOrgEvents(ctx, client, pageNumber, itemsPerPage, orgId)
+		listOptions := &mongodbatlas.EventListOptions{
+			ListOptions: mongodbatlas.ListOptions{
+				PageNum:      pageNumber,
+				ItemsPerPage: int(itemsPerPage),
+			},
+		}
+
+		if d.Quals["created"] != nil {
+			for _, q := range d.Quals["created"].Quals {
+				givenTime := q.Value.GetTimestampValue().AsTime()
+				switch q.Operator {
+				case ">":
+				case ">=":
+					listOptions.MinDate = givenTime.Format(time.RFC3339)
+				case "=":
+					listOptions.MinDate = givenTime.Format(time.RFC3339)
+					listOptions.MaxDate = givenTime.Format(time.RFC3339)
+				case "<=":
+				case "<":
+					listOptions.MaxDate = givenTime.Format(time.RFC3339)
+				}
+			}
+		}
+
+		orgEvents, response, err := client.Events.ListOrganizationEvents(ctx, orgId, listOptions)
 
 		if err != nil {
 			plugin.Logger(ctx).Error("mongodbatlas_org_events.listAtlasOrgEvents", "query_error", err)
 			return nil, err
 		}
 
-		for _, projectEvent := range projectEvents.Results {
+		for _, projectEvent := range orgEvents.Results {
 			d.StreamListItem(ctx, projectEvent)
 			// Context can be cancelled due to manual cancellation or the limit has been hit
 			if d.QueryStatus.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
-		// find the next page
-		hasNextPage := false
 
-		for _, l := range projectEvents.Links {
-			if l.Rel == "next" {
-				hasNextPage = true
-			}
-		}
-
-		if hasNextPage {
+		if hasNextPage(response) {
 			pageNumber++
 			continue
 		}
@@ -238,34 +262,17 @@ func listMongoDBAtlasOrgEvents(ctx context.Context, d *plugin.QueryData, h *plug
 	return nil, nil
 }
 
-func fetchOrgEvents(ctx context.Context, client *mongodbatlas.Client, pageNumber int, itemsPerPage int64, orgId string) (*mongodbatlas.EventResponse, *mongodbatlas.Response, error) {
-	plugin.Logger(ctx).Trace("mongodbatlas_org_events.listAtlasOrgEvents", "fetchProjectEvents", orgId)
-	return client.Events.ListOrganizationEvents(ctx, orgId, &mongodbatlas.EventListOptions{
-		ListOptions: mongodbatlas.ListOptions{
-			PageNum:      pageNumber,
-			ItemsPerPage: int(itemsPerPage),
-		},
-	})
-}
-
 func getAtlasOrgEvent(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	config := GetConfig(d.Connection)
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_org_events.getAtlasOrgEvents", "connection_error", err)
 		return nil, err
 	}
 
-	projectId := *config.ProjectId
-
-	project, _, err := client.Projects.GetOneProject(ctx, projectId)
-	if err != nil {
-		return nil, err
-	}
-
 	eventId := d.KeyColumnQuals["event_id"].GetStringValue()
+	orgId := d.KeyColumnQuals["org_id"].GetStringValue()
 
-	event, _, err := client.Events.GetOrganizationEvent(ctx, project.OrgID, eventId)
+	event, _, err := client.Events.GetOrganizationEvent(ctx, orgId, eventId)
 
 	if err != nil {
 		return nil, err

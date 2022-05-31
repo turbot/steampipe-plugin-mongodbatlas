@@ -14,11 +14,12 @@ func tableMongoDBAtlasDatabaseUser(_ context.Context) *plugin.Table {
 		Name:        "mongodbatlas_database_user",
 		Description: "A database user has access to databases in a mongodb cluster.",
 		List: &plugin.ListConfig{
-			Hydrate: listMongoDBAtlasDatabaseUsers,
+			Hydrate:       listMongoDBAtlasDatabaseUsers,
+			ParentHydrate: listMongoDBAtlasProjects,
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getAtlasDatabaseUser,
-			KeyColumns: plugin.AllColumns([]string{"username", "database_name"}),
+			KeyColumns: plugin.AllColumns([]string{"username", "database_name", "project_id"}),
 		},
 		Columns: []*plugin.Column{
 			{
@@ -70,8 +71,9 @@ func tableMongoDBAtlasDatabaseUser(_ context.Context) *plugin.Table {
 }
 
 func listMongoDBAtlasDatabaseUsers(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	project := h.Item.(*mongodbatlas.Project)
+
 	// Create client
-	config := GetConfig(d.Connection)
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_database_user.listAtlasDatabaseUsers", "connection_error", err)
@@ -85,10 +87,12 @@ func listMongoDBAtlasDatabaseUsers(ctx context.Context, d *plugin.QueryData, h *
 	}
 
 	pageNumber := 1
-	projectId := config.ProjectId
 
 	for {
-		databaseUsers, response, err := fetchDatabaseUsersPage(ctx, client, pageNumber, itemsPerPage, *projectId)
+		databaseUsers, response, err := client.DatabaseUsers.List(ctx, project.ID, &mongodbatlas.ListOptions{
+			PageNum:      pageNumber,
+			ItemsPerPage: int(itemsPerPage),
+		})
 
 		if err != nil {
 			plugin.Logger(ctx).Error("mongodbatlas_database_user.listAtlasDatabaseUsers", "query_error", err)
@@ -102,16 +106,8 @@ func listMongoDBAtlasDatabaseUsers(ctx context.Context, d *plugin.QueryData, h *
 				return nil, nil
 			}
 		}
-		// find the next page
-		hasNextPage := false
 
-		for _, l := range response.Links {
-			if l.Rel == "next" {
-				hasNextPage = true
-			}
-		}
-
-		if hasNextPage {
+		if hasNextPage(response) {
 			pageNumber++
 			continue
 		}
@@ -122,25 +118,15 @@ func listMongoDBAtlasDatabaseUsers(ctx context.Context, d *plugin.QueryData, h *
 	return nil, nil
 }
 
-func fetchDatabaseUsersPage(ctx context.Context, client *mongodbatlas.Client, pageNumber int, itemsPerPage int64, projectId string) ([]mongodbatlas.DatabaseUser, *mongodbatlas.Response, error) {
-	plugin.Logger(ctx).Trace("mongodbatlas_database_user.listAtlasDatabaseUsers", "fetchDatabaseUsersPage", projectId)
-	return client.DatabaseUsers.List(ctx, projectId, &mongodbatlas.ListOptions{
-		PageNum:      pageNumber,
-		ItemsPerPage: int(itemsPerPage),
-	})
-}
-
 func getAtlasDatabaseUser(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	config := GetConfig(d.Connection)
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_database_user.getAtlasDatabaseUser", "connection_error", err)
 		return nil, err
 	}
-	projectId := *config.ProjectId
-
 	username := d.KeyColumnQuals["username"].GetStringValue()
 	databaseName := d.KeyColumnQuals["database_name"].GetStringValue()
+	projectId := d.KeyColumnQuals["project_id"].GetStringValue()
 
 	databaseUser, _, err := client.DatabaseUsers.Get(ctx, databaseName, projectId, username)
 	if err != nil {

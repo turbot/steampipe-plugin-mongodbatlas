@@ -2,6 +2,7 @@ package mongodbatlas
 
 import (
 	"context"
+	"time"
 
 	"github.com/turbot/steampipe-plugin-sdk/v3/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v3/plugin"
@@ -14,11 +15,19 @@ func tableMongoDBAtlasProjectEvents(_ context.Context) *plugin.Table {
 		Name:        "mongodbatlas_project_events",
 		Description: "Project Events allows you to list events for the configured project.",
 		List: &plugin.ListConfig{
-			Hydrate: listMongoDBAtlasProjectEvents,
+			Hydrate:       listMongoDBAtlasProjectEvents,
+			ParentHydrate: listMongoDBAtlasProjects,
+			KeyColumns: []*plugin.KeyColumn{
+				{
+					Name:      "created",
+					Require:   plugin.Optional,
+					Operators: []string{">", ">=", "=", "<", "<="},
+				},
+			},
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getAtlasProjectEvent,
-			KeyColumns: plugin.SingleColumn("alert_id"),
+			KeyColumns: plugin.AllColumns([]string{"alert_id", "project_id"}),
 		},
 		Columns: []*plugin.Column{
 			{
@@ -185,8 +194,8 @@ func tableMongoDBAtlasProjectEvents(_ context.Context) *plugin.Table {
 }
 
 func listMongoDBAtlasProjectEvents(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	project := h.Item.(*mongodbatlas.Project)
 	// Create client
-	config := GetConfig(d.Connection)
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_project_events.listAtlasProjectEvents", "connection_error", err)
@@ -200,10 +209,34 @@ func listMongoDBAtlasProjectEvents(ctx context.Context, d *plugin.QueryData, h *
 	}
 
 	pageNumber := 1
-	projectId := config.ProjectId
 
 	for {
-		projectEvents, _, err := fetchProjectEvents(ctx, client, pageNumber, itemsPerPage, *projectId)
+
+		listOptions := &mongodbatlas.EventListOptions{
+			ListOptions: mongodbatlas.ListOptions{
+				PageNum:      pageNumber,
+				ItemsPerPage: int(itemsPerPage),
+			},
+		}
+
+		if d.Quals["created"] != nil {
+			for _, q := range d.Quals["created"].Quals {
+				givenTime := q.Value.GetTimestampValue().AsTime()
+				switch q.Operator {
+				case ">":
+				case ">=":
+					listOptions.MinDate = givenTime.Format(time.RFC3339)
+				case "=":
+					listOptions.MinDate = givenTime.Format(time.RFC3339)
+					listOptions.MaxDate = givenTime.Format(time.RFC3339)
+				case "<=":
+				case "<":
+					listOptions.MaxDate = givenTime.Format(time.RFC3339)
+				}
+			}
+		}
+
+		projectEvents, response, err := client.Events.ListProjectEvents(ctx, project.ID, listOptions)
 
 		if err != nil {
 			plugin.Logger(ctx).Error("mongodbatlas_project_events.listAtlasProjectEvents", "query_error", err)
@@ -217,16 +250,8 @@ func listMongoDBAtlasProjectEvents(ctx context.Context, d *plugin.QueryData, h *
 				return nil, nil
 			}
 		}
-		// find the next page
-		hasNextPage := false
 
-		for _, l := range projectEvents.Links {
-			if l.Rel == "next" {
-				hasNextPage = true
-			}
-		}
-
-		if hasNextPage {
+		if hasNextPage(response) {
 			pageNumber++
 			continue
 		}
@@ -237,26 +262,15 @@ func listMongoDBAtlasProjectEvents(ctx context.Context, d *plugin.QueryData, h *
 	return nil, nil
 }
 
-func fetchProjectEvents(ctx context.Context, client *mongodbatlas.Client, pageNumber int, itemsPerPage int64, projectId string) (*mongodbatlas.EventResponse, *mongodbatlas.Response, error) {
-	plugin.Logger(ctx).Trace("mongodbatlas_project_events.listAtlasProjectEvents", "fetchProjectEvents", projectId)
-	return client.Events.ListProjectEvents(ctx, projectId, &mongodbatlas.EventListOptions{
-		ListOptions: mongodbatlas.ListOptions{
-			PageNum:      pageNumber,
-			ItemsPerPage: int(itemsPerPage),
-		},
-	})
-}
-
 func getAtlasProjectEvent(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	config := GetConfig(d.Connection)
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_project_events.getAtlasProjectEvents", "connection_error", err)
 		return nil, err
 	}
 
-	projectId := *config.ProjectId
 	eventId := d.KeyColumnQuals["event_id"].GetStringValue()
+	projectId := d.KeyColumnQuals["project_id"].GetStringValue()
 
 	event, _, err := client.Events.GetProjectEvent(ctx, projectId, eventId)
 

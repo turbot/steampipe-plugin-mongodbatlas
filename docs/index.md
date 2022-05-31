@@ -57,30 +57,18 @@ connection "mongodbatlas" {
   plugin = "mongodbatlas"
 
   # Public and Private Key Pair with the necessary permissions
-  # These can also be 'MONGODB_ATLAS_PUBLIC_KEY' and/or 'MONGODB_ATLAS_PRIVATE_KEY'
+  # These can also be 'MONGODB_ATLAS_PUBLIC_API_KEY' and/or 'MONGODB_ATLAS_PRIVATE_API_KEY'
   # Consult https://www.mongodb.com/docs/atlas/configure-api-access/#create-an-api-key-in-an-organization on how to generate API keys
-  # public_key = "public key here"
-  # private_key = "private key here"
-  # project_id = "project ID"
+  # public_key = "hnxxxxxo"
+  # private_key = "xxxxxxxx-xxxx-4xxx-axxx-dxxxxxxxd9fc"
 }
 
 ```
 
-#### Configuring using Environment Variables
-
-The plugin uses the standard credential environment variables supported by the Atlas CLI
-
-```bash
-export MONGODB_ATLAS_PUBLIC_API_KEY=hnxxxxxo
-export MONGODB_ATLAS_PRIVATE_API_KEY=xxxxxxxx-xxxx-4xxx-axxx-dxxxxxxxd9fc
-```
-
-```hcl
-connection "mongodbatlas" {
-  plugin = "mongodbatlas"
-  project_id = "627278725xxxxxxxxxxxxxx0"
-}
-```
+| Property      | Required/Optional | Description                                                                                                                        |
+| ------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `public_key`  | `Optional`        | The API public key from the MongoDB Atlas console. Can also be set with the `MONGODB_ATLAS_PUBLIC_API_KEY` environment variable.   |
+| `private_key` | `Optional`        | The API private key from the MongoDB Atlas console. Can also be set with the `MONGODB_ATLAS_PRIVATE_API_KEY` environment variable. |
 
 ## Get involved
 
