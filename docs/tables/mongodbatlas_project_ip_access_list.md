@@ -18,7 +18,7 @@ from
   mongodbatlas_project_ip_access_list
 ```
 
-### List all ip access lists which belong to a specific `aws security group`
+### List all IP access lists which belong to a specific `aws security group`
 
 ```sql
 select

@@ -27,3 +27,15 @@ from
 where
   target_username='billy@example.com'
 ```
+
+### Check if AWS Encryption key needs rotation
+
+```sql
+select
+   count(id) > 0
+from
+   mongodbatlas_project_event
+where
+   event_type_name = 'AWS_ENCRYPTION_KEY_NEEDS_ROTATION'
+   and created > (now() - INTERVAL '24 hours')
+```
