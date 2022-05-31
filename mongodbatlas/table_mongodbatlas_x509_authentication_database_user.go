@@ -16,6 +16,7 @@ func tableMongoDBAtlasX509AuthenticationDatabaseUser(_ context.Context) *plugin.
 		List: &plugin.ListConfig{
 			Hydrate:       listDatabaseUserX509Auth,
 			ParentHydrate: listMongoDBAtlasProjects,
+			KeyColumns:    plugin.OptionalColumns([]string{"project_id"}),
 		},
 		Columns: []*plugin.Column{
 			{

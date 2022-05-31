@@ -17,6 +17,10 @@ func tableMongoDBAtlasProject(_ context.Context) *plugin.Table {
 			Hydrate:    listMongoDBAtlasProjects,
 			KeyColumns: plugin.OptionalColumns([]string{"id"}),
 		},
+		Get: &plugin.GetConfig{
+			Hydrate:    getMongoDBAtlasProject,
+			KeyColumns: plugin.SingleColumn("id"),
+		},
 		Columns: []*plugin.Column{
 			{
 				Name:        "id",
@@ -52,6 +56,23 @@ func tableMongoDBAtlasProject(_ context.Context) *plugin.Table {
 	}
 }
 
+func getMongoDBAtlasProject(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	client, err := getMongodbAtlasClient(ctx, d)
+	if err != nil {
+		plugin.Logger(ctx).Error("mongodbatlas_project.listAtlasProjects", "connection_error", err)
+		return nil, err
+	}
+
+	projectId := d.KeyColumnQuals["id"].GetStringValue()
+
+	project, _, err := client.Projects.GetOneProject(ctx, projectId)
+	if err != nil {
+		return nil, err
+	}
+
+	return project, nil
+}
+
 func listMongoDBAtlasProjects(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
@@ -59,8 +80,8 @@ func listMongoDBAtlasProjects(ctx context.Context, d *plugin.QueryData, h *plugi
 		return nil, err
 	}
 
-	if len(d.KeyColumnQuals["id"].GetStringValue()) != 0 {
-		project, _, err := client.Projects.GetOneProject(ctx, d.KeyColumnQuals["id"].GetStringValue())
+	if len(d.KeyColumnQualString("project_id")) != 0 {
+		project, _, err := client.Projects.GetOneProject(ctx, d.KeyColumnQualString("project_id"))
 		if err != nil {
 			return nil, err
 		}

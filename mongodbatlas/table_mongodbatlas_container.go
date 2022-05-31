@@ -21,7 +21,7 @@ func tableMongoDBAtlasContainer(_ context.Context) *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate:       listMongoDBAtlasContainers,
 			ParentHydrate: listMongoDBAtlasProjects,
-			KeyColumns:    plugin.OptionalColumns([]string{"provider_name"}),
+			KeyColumns:    plugin.OptionalColumns([]string{"provider_name", "project_id"}),
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getContainer,

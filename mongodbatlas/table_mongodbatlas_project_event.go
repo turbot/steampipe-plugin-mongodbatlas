@@ -19,6 +19,11 @@ func tableMongoDBAtlasProjectEvents(_ context.Context) *plugin.Table {
 			ParentHydrate: listMongoDBAtlasProjects,
 			KeyColumns: []*plugin.KeyColumn{
 				{
+					Name:      "project_id",
+					Require:   plugin.Optional,
+					Operators: []string{"="},
+				},
+				{
 					Name:      "created",
 					Require:   plugin.Optional,
 					Operators: []string{">", ">=", "=", "<", "<="},

@@ -16,6 +16,7 @@ func tableMongoDBAtlasServerlessInstance(_ context.Context) *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate:       listMongoDBAtlasServerlessInstances,
 			ParentHydrate: listMongoDBAtlasProjects,
+			KeyColumns:    plugin.OptionalColumns([]string{"project_id"}),
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getAtlasServerlessInstance,

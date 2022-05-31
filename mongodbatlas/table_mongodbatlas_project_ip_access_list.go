@@ -21,6 +21,7 @@ Atlas supports creating temporary IP access list entries that expire within a us
 		List: &plugin.ListConfig{
 			Hydrate:       listMongoDBAtlasProjectIpAccessList,
 			ParentHydrate: listMongoDBAtlasProjects,
+			KeyColumns:    plugin.OptionalColumns([]string{"project_id"}),
 		},
 		Get: &plugin.GetConfig{
 			Hydrate: getAtlasProjectIpAccessList,

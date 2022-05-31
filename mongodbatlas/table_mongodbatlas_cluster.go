@@ -16,6 +16,7 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate:       listMongoDBAtlasClusters,
 			ParentHydrate: listMongoDBAtlasProjects,
+			KeyColumns:    plugin.OptionalColumns([]string{"project_id"}),
 		},
 		Get: &plugin.GetConfig{
 			Hydrate:    getAtlasCluster,
@@ -172,6 +173,10 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 }
 
 func listMongoDBAtlasClusters(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Trace("**************", d.Quals["project_id"])
+	plugin.Logger(ctx).Trace("**************", d.KeyColumnQuals["project_id"])
+	plugin.Logger(ctx).Trace("**************", d.KeyColumnQualString("project_id"))
+
 	project := h.Item.(*mongodbatlas.Project)
 	// Create client
 	client, err := getMongodbAtlasClient(ctx, d)
@@ -225,8 +230,8 @@ func getAtlasCluster(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 		plugin.Logger(ctx).Error("mongodbatlas_cluster.getAtlasCluster", "connection_error", err)
 		return nil, err
 	}
-	projectId := d.KeyColumnQuals["project_id"].GetStringValue()
-	clusterName := d.KeyColumnQuals["name"].GetStringValue()
+	projectId := d.KeyColumnQualString("project_id")
+	clusterName := d.KeyColumnQualString("name")
 
 	cluster, _, err := client.Clusters.Get(ctx, projectId, clusterName)
 	if err != nil {
