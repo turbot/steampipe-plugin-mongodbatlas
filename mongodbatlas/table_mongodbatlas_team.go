@@ -9,13 +9,18 @@ import (
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
+type rowTeam struct {
+	mongodbatlas.Team
+	OrgId string
+}
+
 func tableMongoDBAtlasTeam(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_team",
 		Description: "Teams enable you to grant project access roles to multiple users. You add any number of organization users to a team.",
 		List: &plugin.ListConfig{
 			Hydrate:       listMongodDBAtlasTeams,
-			ParentHydrate: listMongoDBAtlasProjects,
+			ParentHydrate: listMongoDBAtlasOrg,
 		},
 		Columns: []*plugin.Column{
 			{
@@ -30,6 +35,18 @@ func tableMongoDBAtlasTeam(_ context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Name"),
 			},
+			{
+				Name:        "users",
+				Description: "Users assigned to the team.",
+				Type:        proto.ColumnType_JSON,
+				Transform:   transform.FromValue(),
+				Hydrate:     getTeamUsers,
+			},
+			{
+				Name:        "org_id",
+				Description: "Unique identifier of the organization for this team",
+				Type:        proto.ColumnType_STRING,
+			},
 			// Steampipe standard columns
 			{
 				Name:        "title",
@@ -42,7 +59,7 @@ func tableMongoDBAtlasTeam(_ context.Context) *plugin.Table {
 }
 
 func listMongodDBAtlasTeams(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	project := h.Item.(*mongodbatlas.Project)
+	org := h.Item.(*mongodbatlas.Organization)
 
 	// Create client
 	client, err := getMongodbAtlasClient(ctx, d)
@@ -60,7 +77,7 @@ func listMongodDBAtlasTeams(ctx context.Context, d *plugin.QueryData, h *plugin.
 	pageNumber := 1
 
 	for {
-		teams, response, err := client.Teams.List(ctx, project.OrgID, &mongodbatlas.ListOptions{
+		teams, response, err := client.Teams.List(ctx, org.ID, &mongodbatlas.ListOptions{
 			PageNum:      pageNumber,
 			ItemsPerPage: int(itemsPerPage),
 		})
@@ -71,7 +88,11 @@ func listMongodDBAtlasTeams(ctx context.Context, d *plugin.QueryData, h *plugin.
 		}
 
 		for _, team := range teams {
-			d.StreamListItem(ctx, team)
+			rTeam := rowTeam{
+				Team:  team,
+				OrgId: org.ID,
+			}
+			d.StreamListItem(ctx, rTeam)
 			// Context can be cancelled due to manual cancellation or the limit has been hit
 			if d.QueryStatus.RowsRemaining(ctx) == 0 {
 				return nil, nil
@@ -85,4 +106,23 @@ func listMongodDBAtlasTeams(ctx context.Context, d *plugin.QueryData, h *plugin.
 	}
 
 	return nil, nil
+}
+
+func getTeamUsers(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	data := h.Item.(rowTeam)
+
+	client, err := getMongodbAtlasClient(ctx, d)
+	if err != nil {
+		plugin.Logger(ctx).Error("table_mongodbatlas_team.listTeams", "connection_error", err)
+		return nil, err
+	}
+
+	users, _, err := client.Teams.GetTeamUsersAssigned(ctx, data.OrgId, data.ID)
+	plugin.Logger(ctx).Trace("error", err)
+	plugin.Logger(ctx).Trace("users", users)
+	if err != nil {
+		return nil, err
+	}
+
+	return users, nil
 }

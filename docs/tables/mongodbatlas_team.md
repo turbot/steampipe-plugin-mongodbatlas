@@ -4,7 +4,7 @@ Teams enable you to grant project access roles to multiple users. You add any nu
 
 Needs `Organization Owner` access in the provided key pair.
 
-## Example
+## Examples
 
 ### Basic info
 
@@ -12,6 +12,17 @@ Needs `Organization Owner` access in the provided key pair.
 select
   id,
   name
+from
+  mongodbatlas_team
+```
+
+### List users in all teams
+
+```sql
+select
+  id,
+  name,
+  jsonb_array_elements(users) as user
 from
   mongodbatlas_team
 ```
