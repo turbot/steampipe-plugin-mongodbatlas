@@ -12,7 +12,7 @@ import (
 func tableMongoDBAtlasProject(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_project",
-		Description: "Returns details of the project configured in the connection config",
+		Description: "Returns details of the project configured in the connection config.",
 		List: &plugin.ListConfig{
 			Hydrate:    listMongoDBAtlasProjects,
 			KeyColumns: plugin.OptionalColumns([]string{"id"}),
@@ -56,7 +56,7 @@ func tableMongoDBAtlasProject(_ context.Context) *plugin.Table {
 }
 
 func getMongoDBAtlasProject(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_project.listAtlasProjects", "connection_error", err)
 		return nil, err
@@ -73,7 +73,7 @@ func getMongoDBAtlasProject(ctx context.Context, d *plugin.QueryData, h *plugin.
 }
 
 func listMongoDBAtlasProjects(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_project.listAtlasProjects", "connection_error", err)
 		return nil, err

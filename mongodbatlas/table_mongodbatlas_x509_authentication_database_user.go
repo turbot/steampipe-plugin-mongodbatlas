@@ -65,7 +65,7 @@ func listDatabaseUserX509Auth(ctx context.Context, d *plugin.QueryData, h *plugi
 	project := h.Item.(*mongodbatlas.Project)
 
 	// Create client
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("x509_authentication_database_user.listDatabaseUserX509Auth", "connection_error", err)
 		return nil, err

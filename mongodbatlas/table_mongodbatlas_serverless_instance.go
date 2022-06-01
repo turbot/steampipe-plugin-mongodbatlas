@@ -75,7 +75,7 @@ func tableMongoDBAtlasServerlessInstance(_ context.Context) *plugin.Table {
 func listMongoDBAtlasServerlessInstances(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	// Create client
 	project := h.Item.(*mongodbatlas.Project)
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_serverless_instance.listAtlasServerlessInstances", "connection_error", err)
 		return nil, err
@@ -122,7 +122,7 @@ func listMongoDBAtlasServerlessInstances(ctx context.Context, d *plugin.QueryDat
 }
 
 func getAtlasServerlessInstance(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_serverless_instance.getAtlasServerlessInstances", "connection_error", err)
 		return nil, err

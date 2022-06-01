@@ -17,7 +17,7 @@ type rowContainer struct {
 func tableMongoDBAtlasContainer(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_container",
-		Description: "Containers in a project allows for cloud provider backed virtual private networking - dubbed as container network peering in MongoDB Atlas",
+		Description: "Containers in a project allows for cloud provider backed virtual private networking - dubbed as container network peering in MongoDB Atlas.",
 		List: &plugin.ListConfig{
 			Hydrate:       listMongoDBAtlasContainers,
 			ParentHydrate: listMongoDBAtlasProjects,
@@ -101,7 +101,7 @@ func tableMongoDBAtlasContainer(_ context.Context) *plugin.Table {
 func listMongoDBAtlasContainers(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	project := h.Item.(*mongodbatlas.Project)
 	// Create client
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("table_mongodbatlas_container.listContainers", "connection_error", err)
 		return nil, err
@@ -158,7 +158,7 @@ func listMongoDBAtlasContainers(ctx context.Context, d *plugin.QueryData, h *plu
 }
 
 func getContainer(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_project_events.getAtlasProjectEvents", "connection_error", err)
 		return nil, err

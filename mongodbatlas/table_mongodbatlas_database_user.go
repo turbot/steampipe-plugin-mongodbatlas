@@ -75,7 +75,7 @@ func listMongoDBAtlasDatabaseUsers(ctx context.Context, d *plugin.QueryData, h *
 	project := h.Item.(*mongodbatlas.Project)
 
 	// Create client
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_database_user.listAtlasDatabaseUsers", "connection_error", err)
 		return nil, err
@@ -120,7 +120,7 @@ func listMongoDBAtlasDatabaseUsers(ctx context.Context, d *plugin.QueryData, h *
 }
 
 func getAtlasDatabaseUser(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_database_user.getAtlasDatabaseUser", "connection_error", err)
 		return nil, err

@@ -195,7 +195,7 @@ func tableMongoDBAtlasOrgEvents(ctx context.Context) *plugin.Table {
 func listMongoDBAtlasOrgEvents(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	// Create client
 	org := h.Item.(*mongodbatlas.Organization)
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_org_events.listAtlasOrgEvents", "connection_error", err)
 		return nil, err
@@ -262,7 +262,7 @@ func listMongoDBAtlasOrgEvents(ctx context.Context, d *plugin.QueryData, h *plug
 }
 
 func getAtlasOrgEvent(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_org_events.getAtlasOrgEvents", "connection_error", err)
 		return nil, err

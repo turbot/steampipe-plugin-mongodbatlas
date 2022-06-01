@@ -200,7 +200,7 @@ func tableMongoDBAtlasProjectEvents(_ context.Context) *plugin.Table {
 func listMongoDBAtlasProjectEvents(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	project := h.Item.(*mongodbatlas.Project)
 	// Create client
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_project_events.listAtlasProjectEvents", "connection_error", err)
 		return nil, err
@@ -267,7 +267,7 @@ func listMongoDBAtlasProjectEvents(ctx context.Context, d *plugin.QueryData, h *
 }
 
 func getAtlasProjectEvent(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_project_events.getAtlasProjectEvents", "connection_error", err)
 		return nil, err

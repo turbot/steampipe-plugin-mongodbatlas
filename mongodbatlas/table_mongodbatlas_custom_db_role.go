@@ -62,7 +62,7 @@ func tableMongoDBAtlasCustomDBRole(_ context.Context) *plugin.Table {
 func listMongoDBAtlasCustomDBRoles(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	project := h.Item.(*mongodbatlas.Project)
 	// Create client
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_custom_db_role.listAtlasCustomDBRoles", "connection_error", err)
 		return nil, err
@@ -111,7 +111,7 @@ func listMongoDBAtlasCustomDBRoles(ctx context.Context, d *plugin.QueryData, h *
 }
 
 func getAtlasCustomDBRole(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_custom_db_role.getAtlasCustomDBRole", "connection_error", err)
 		return nil, err

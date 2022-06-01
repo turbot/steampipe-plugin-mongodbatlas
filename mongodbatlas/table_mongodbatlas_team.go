@@ -61,7 +61,7 @@ func listMongodDBAtlasTeams(ctx context.Context, d *plugin.QueryData, h *plugin.
 	org := h.Item.(*mongodbatlas.Organization)
 
 	// Create client
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("table_mongodbatlas_team.listTeams", "connection_error", err)
 		return nil, err
@@ -110,7 +110,7 @@ func listMongodDBAtlasTeams(ctx context.Context, d *plugin.QueryData, h *plugin.
 func getTeamUsers(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	data := h.Item.(rowTeam)
 
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("table_mongodbatlas_team.listTeams", "connection_error", err)
 		return nil, err

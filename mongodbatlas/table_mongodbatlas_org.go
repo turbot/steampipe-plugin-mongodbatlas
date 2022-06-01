@@ -12,7 +12,7 @@ import (
 func tableMongoDBAtlasOrg(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_org",
-		Description: "Returns a single record containing the parent org of the project",
+		Description: "Returns a single record containing the parent org of the project.",
 		List: &plugin.ListConfig{
 			Hydrate:    listMongoDBAtlasOrg,
 			KeyColumns: plugin.OptionalColumns([]string{"id"}),
@@ -46,7 +46,7 @@ func tableMongoDBAtlasOrg(_ context.Context) *plugin.Table {
 }
 
 func listMongoDBAtlasOrg(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_org.listProjectParentOrg", "connection_error", err)
 		return nil, err

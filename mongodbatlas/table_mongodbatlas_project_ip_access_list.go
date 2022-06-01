@@ -92,7 +92,7 @@ The IP access list applies to all database deployments in the project and can ha
 func listMongoDBAtlasProjectIpAccessList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	// Create client
 	project := h.Item.(*mongodbatlas.Project)
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_project_ip_access_list.listAtlasProjectIpAccessList", "connection_error", err)
 		return nil, err
@@ -140,7 +140,7 @@ func listMongoDBAtlasProjectIpAccessList(ctx context.Context, d *plugin.QueryDat
 
 func getAtlasProjectIpAccessList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 
-	client, err := getMongodbAtlasClient(ctx, d)
+	client, err := getMongoDBAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_project_ip_access_list.getAtlasProjectIpAccessList", "connection_error", err)
 		return nil, err
