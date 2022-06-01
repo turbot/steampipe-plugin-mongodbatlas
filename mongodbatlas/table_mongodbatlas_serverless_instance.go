@@ -35,7 +35,7 @@ func tableMongoDBAtlasServerlessInstance(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "project_id",
-				Description: "Unique identifier of the project that this cluster belongs to",
+				Description: "Unique identifier of the project that this cluster belongs to.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("GroupID"),
 			},

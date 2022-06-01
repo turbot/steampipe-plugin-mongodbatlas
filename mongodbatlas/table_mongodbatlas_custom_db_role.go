@@ -30,12 +30,12 @@ func tableMongoDBAtlasCustomDBRole(_ context.Context) *plugin.Table {
 		Columns: []*plugin.Column{
 			{
 				Name:        "role_name",
-				Description: "The name of the role",
+				Description: "The name of the role.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
 				Name:        "project_id",
-				Description: "The unique identifier of the project for this role",
+				Description: "The unique identifier of the project for this role.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{

@@ -27,7 +27,6 @@ func tableMongoDBAtlasTeam(_ context.Context) *plugin.Table {
 				Name:        "id",
 				Description: "Unique identifier for the team.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("ID"),
 			},
 			{
 				Name:        "name",
@@ -44,7 +43,7 @@ func tableMongoDBAtlasTeam(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "org_id",
-				Description: "Unique identifier of the organization for this team",
+				Description: "Unique identifier of the organization for this team.",
 				Type:        proto.ColumnType_STRING,
 			},
 			// Steampipe standard columns

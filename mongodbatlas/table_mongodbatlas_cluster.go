@@ -35,7 +35,7 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "project_id",
-				Description: "Unique identifier of the project that this cluster belongs to",
+				Description: "Unique identifier of the project that this cluster belongs to.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("GroupID"),
 			},
@@ -51,7 +51,7 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "cluster_type",
-				Description: "Type of the cluster",
+				Description: "Type of the cluster.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
@@ -89,15 +89,13 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "mongo_uri_updated",
-				Description: "Timestamp when the connection string was last updated. ",
+				Description: "Timestamp when the connection string was last updated.",
 				Type:        proto.ColumnType_TIMESTAMP,
-				Transform:   transform.FromField("MongoURIUpdated"),
 			},
 			{
 				Name:        "mongo_uri_with_options",
 				Description: "Connection string for connecting to the Atlas cluster. Includes the replicaSet, ssl, and authSource query parameters in the connection string with values appropriate for the cluster.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("MongoURIWithOptions"),
 			},
 			{
 				Name:        "num_shards",
@@ -111,7 +109,7 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "pit_enabled",
-				Description: "Flag that indicates whether the cluster uses continuous cloud backups. More information is available at https://www.mongodb.com/docs/atlas/backup/cloud-backup/overview/#continuous-cloud-backups",
+				Description: "Flag that indicates whether the cluster uses continuous cloud backups. More information is available at https://www.mongodb.com/docs/atlas/backup/cloud-backup/overview/#continuous-cloud-backups.",
 				Type:        proto.ColumnType_BOOL,
 			},
 			{
@@ -156,7 +154,7 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 			},
 			{
 				Name:        "version_release_system",
-				Description: `Release cadence that Atlas uses for this cluster.`,
+				Description: "Release cadence that Atlas uses for this cluster.",
 				Type:        proto.ColumnType_STRING,
 			},
 

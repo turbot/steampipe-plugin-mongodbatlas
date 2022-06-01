@@ -32,18 +32,18 @@ func tableMongoDBAtlasOrgEvents(ctx context.Context) *plugin.Table {
 		Columns: []*plugin.Column{
 			{
 				Name:        "id",
-				Description: "Unique identifier for the event",
+				Description: "Unique identifier for the event.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
 				Name:        "alert_id",
-				Description: "Unique identifier for the alert associated with the event",
+				Description: "Unique identifier for the alert associated with the event.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("AlertID").NullIfZero(),
 			},
 			{
 				Name:        "alert_config_id",
-				Description: "Unique identifier for the alert configuration associated to the alertId",
+				Description: "Unique identifier for the alert configuration associated to the alertId.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{

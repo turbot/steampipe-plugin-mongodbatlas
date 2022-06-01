@@ -37,7 +37,7 @@ func tableMongoDBAtlasProjectEvents(_ context.Context) *plugin.Table {
 		Columns: []*plugin.Column{
 			{
 				Name:        "id",
-				Description: "Unique identifier for the event",
+				Description: "Unique identifier for the event.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{

@@ -26,7 +26,6 @@ func tableMongoDBAtlasProject(_ context.Context) *plugin.Table {
 				Name:        "id",
 				Description: "A unique identifier of the project.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("ID"),
 			},
 			{
 				Name:        "name",
