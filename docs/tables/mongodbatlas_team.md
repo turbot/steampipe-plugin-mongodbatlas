@@ -13,7 +13,7 @@ select
   id,
   name
 from
-  mongodbatlas_team
+  mongodbatlas_team;
 ```
 
 ### List users in all teams
@@ -24,5 +24,5 @@ select
   name,
   jsonb_array_elements(users) as user
 from
-  mongodbatlas_team
+  mongodbatlas_team;
 ```

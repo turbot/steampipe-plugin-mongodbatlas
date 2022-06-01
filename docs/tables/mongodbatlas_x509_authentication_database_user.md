@@ -13,7 +13,7 @@ select
 from
   mongodbatlas_x509_authentication_database_user
 where
-  username = 'billy'
+  username = 'billy';
 ```
 
 ### List all X.509 certificates expiring in 15 days
@@ -25,7 +25,7 @@ select
 from
   mongodbatlas_x509_authentication_database_user
 where
-  not_after < (now() + INTERVAL '15 days')
+  not_after < (now() + INTERVAL '15 days');
 ```
 
 ### List all X.509 certificates expiring after 90 days
@@ -37,7 +37,7 @@ select
 from
   mongodbatlas_x509_authentication_database_user
 where
-  not_after > (now() + INTERVAL '90 days')
+  not_after > (now() + INTERVAL '90 days');
 ```
 
 ### List all X.509 certificates expiring within 2 months
@@ -49,5 +49,5 @@ select
 from
   mongodbatlas_x509_authentication_database_user
 where
-  months_until_expiration <= 2
+  months_until_expiration <= 2;
 ```

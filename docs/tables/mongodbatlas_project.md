@@ -20,7 +20,7 @@ select
   id,
   name
 from
-  mongodbatlas_project
+  mongodbatlas_project;
 ```
 
 ### List projects with at least 1 cluster
@@ -33,5 +33,5 @@ select
 from
   mongodbatlas_project
 where
-  cluster_count > 0
+  cluster_count > 0;
 ```

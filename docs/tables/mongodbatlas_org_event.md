@@ -13,7 +13,7 @@ select
   project_id,
   target_username
 from
-  mongodbatlas_org_event
+  mongodbatlas_org_event;
 ```
 
 ### List all events raised by a specific user
@@ -25,7 +25,7 @@ select
 from
   mongodbatlas_org_event
 where
-  target_username = 'billy@example.com'
+  target_username = 'billy@example.com';
 ```
 
 ### List all events where a user has joined a project in the last 24 hours
@@ -39,7 +39,7 @@ from
   mongodbatlas_org_event
 where
   event_type_name = 'JOINED_GROUP'
-  and created > (now() - INTERVAL '24 hours')
+  and created > (now() - INTERVAL '24 hours');
 ```
 
 ### Check if daily bill has exceeded set threshold
@@ -50,5 +50,5 @@ select
 from
   mongodbatlas_org_event
 where
-  event_type_name = 'DAILY_BILL_OVER_THRESHOLD'
+  event_type_name = 'DAILY_BILL_OVER_THRESHOLD';
 ```

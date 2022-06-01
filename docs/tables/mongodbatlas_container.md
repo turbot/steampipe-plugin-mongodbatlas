@@ -12,7 +12,7 @@ select
   provider_name,
   atlas_cidr_block
 from
-  mongodbatlas_container
+  mongodbatlas_container;
 ```
 
 ### List all peered containers in a specific cloud provider
@@ -25,5 +25,5 @@ select
 from
   mongodbatlas_container
 where
-  provider_name = 'aws'
+  provider_name = 'aws';
 ```

@@ -13,7 +13,7 @@ select
   role_name,
   actions
 from
-  mongodbatlas_custom_db_role
+  mongodbatlas_custom_db_role;
 ```
 
 ### List roles which have the 'FIND' action defined
@@ -25,7 +25,7 @@ from
   mongodbatlas_custom_db_role as r,
   jsonb_array_elements(t.actions) as a
 where
-  a ->> 'action' = 'FIND'
+  a ->> 'action' = 'FIND';
 ```
 
 ### List roles which have at least one inherited role
@@ -36,5 +36,5 @@ select
 from
   mongodbatlas_custom_db_role
 where
-  jsonb_array_length(inherited_roles) > 0
+  jsonb_array_length(inherited_roles) > 0;
 ```

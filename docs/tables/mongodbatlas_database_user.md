@@ -11,7 +11,7 @@ select
   id,
   name
 from
-  mongodbatlas_database_user
+  mongodbatlas_database_user;
 ```
 
 ### List all scopes for each user
@@ -21,7 +21,7 @@ select
   username,
   jsonb_array_elements(scopes) as scopes
 from
-  mongodbatlas_database_user
+  mongodbatlas_database_user;
 ```
 
 ### List all roles for each user
@@ -31,7 +31,7 @@ select
   username,
   jsonb_array_elements(roles) as roles
 from
-  mongodbatlas_database_user
+  mongodbatlas_database_user;
 ```
 
 ### List all database users who have 'readWriteAnyDatabase' role on the database 'admin'
@@ -45,5 +45,5 @@ from
   jsonb_array_elements(u.roles) r
 where
   r ->> 'roleName' = 'readWriteAnyDatabase'
-  AND r ->> 'databaseName' = 'admin'
+  AND r ->> 'databaseName' = 'admin';
 ```

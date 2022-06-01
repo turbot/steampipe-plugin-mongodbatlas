@@ -15,7 +15,7 @@ select
   ip_address,
   cidr_block
 from
-  mongodbatlas_project_ip_access_list
+  mongodbatlas_project_ip_access_list;
 ```
 
 ### List all IP access lists which belong to a specific `aws security group`
@@ -28,7 +28,7 @@ select
 from
   mongodbatlas_project_ip_access_list
 where
-  aws_security_group = 'sgr_mongodbatlas_sec_group'
+  aws_security_group = 'sgr_mongodbatlas_sec_group';
 ```
 
 ### LIST CIDR details

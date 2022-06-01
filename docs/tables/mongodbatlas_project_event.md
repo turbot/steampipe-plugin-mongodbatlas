@@ -13,7 +13,7 @@ select
   project_id,
   target_username
 from
-  mongodbatlas_project_event
+  mongodbatlas_project_event;
 ```
 
 ### List all events raised by a specific user
@@ -27,7 +27,7 @@ from
 where
   target_username = 'billy@example.com'
 order by
-  created
+  created;
 ```
 
 ### Check if AWS encryption key needs rotation
@@ -39,5 +39,5 @@ from
   mongodbatlas_project_event
 where
   event_type_name = 'AWS_ENCRYPTION_KEY_NEEDS_ROTATION'
-  and created > (now() - INTERVAL '24 hours')
+  and created > (now() - INTERVAL '24 hours');
 ```

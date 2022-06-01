@@ -23,5 +23,5 @@ select
 from
   mongodbatlas_org
 where
-  is_deleted
+  is_deleted;
 ```
