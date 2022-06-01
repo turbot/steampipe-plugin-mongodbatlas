@@ -19,7 +19,7 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 			KeyColumns:    plugin.OptionalColumns([]string{"project_id"}),
 		},
 		Get: &plugin.GetConfig{
-			Hydrate:    getAtlasCluster,
+			Hydrate:    getMongoDBAtlasCluster,
 			KeyColumns: plugin.AllColumns([]string{"name", "project_id"}),
 		},
 		Columns: []*plugin.Column{
@@ -45,10 +45,9 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 				Type:        proto.ColumnType_JSON,
 			},
 			{
-				Name:        "bi_connector_config",
+				Name:        "bi_connector",
 				Description: "Configuration settings applied to BI Connector for Atlas on this cluster.",
 				Type:        proto.ColumnType_JSON,
-				Transform:   transform.FromField("BiConnector"),
 			},
 			{
 				Name:        "cluster_type",
@@ -224,7 +223,7 @@ func listMongoDBAtlasClusters(ctx context.Context, d *plugin.QueryData, h *plugi
 	return nil, nil
 }
 
-func getAtlasCluster(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func getMongoDBAtlasCluster(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	client, err := getMongodbAtlasClient(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("mongodbatlas_cluster.getAtlasCluster", "connection_error", err)

@@ -34,7 +34,6 @@ func tableMongoDBAtlasOrgEvents(ctx context.Context) *plugin.Table {
 				Name:        "id",
 				Description: "Unique identifier for the event",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("ID"),
 			},
 			{
 				Name:        "alert_id",

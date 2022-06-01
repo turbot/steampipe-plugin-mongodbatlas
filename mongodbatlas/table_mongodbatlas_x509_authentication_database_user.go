@@ -12,7 +12,7 @@ import (
 func tableMongoDBAtlasX509AuthenticationDatabaseUser(_ context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "mongodbatlas_x509_authentication_database_user",
-		Description: "Database Users can authenticate against databases using X.509 certificates. Certificates can be managed by Atlas or can be self-managed",
+		Description: "Database Users can authenticate against databases using X.509 certificates. Certificates can be managed by Atlas or can be self-managed.",
 		List: &plugin.ListConfig{
 			Hydrate:       listDatabaseUserX509Auth,
 			ParentHydrate: listMongoDBAtlasProjects,
@@ -26,7 +26,7 @@ func tableMongoDBAtlasX509AuthenticationDatabaseUser(_ context.Context) *plugin.
 			},
 			{
 				Name:        "subject",
-				Description: "Fully distinguished name of the database user to which this certificate belongs. To learn more, see RFC 2253.",
+				Description: "Fully distinguished name of the database user to which this certificate belongs.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
@@ -41,7 +41,7 @@ func tableMongoDBAtlasX509AuthenticationDatabaseUser(_ context.Context) *plugin.
 			},
 			{
 				Name:        "months_until_expiration",
-				Description: "A number of months that the created certificate is valid for before expiry, up to 24 months.default 3.",
+				Description: "The number of months that the created certificate is valid for before expiry.",
 				Type:        proto.ColumnType_INT,
 			},
 			{

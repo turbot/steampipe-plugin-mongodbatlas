@@ -39,17 +39,16 @@ func tableMongoDBAtlasProjectEvents(_ context.Context) *plugin.Table {
 				Name:        "id",
 				Description: "Unique identifier for the event",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("ID"),
 			},
 			{
 				Name:        "alert_id",
-				Description: "Unique identifier for the alert associated with the event",
+				Description: "Unique identifier for the alert associated with the event.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("AlertID").NullIfZero(),
 			},
 			{
 				Name:        "alert_config_id",
-				Description: "Unique identifier for the alert configuration associated to the alertId",
+				Description: "Unique identifier for the alert configuration associated to the alertId.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{

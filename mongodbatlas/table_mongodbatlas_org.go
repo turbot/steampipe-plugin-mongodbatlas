@@ -22,7 +22,6 @@ func tableMongoDBAtlasOrg(_ context.Context) *plugin.Table {
 				Name:        "id",
 				Description: "Unique identifier for the organization.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("ID"),
 			},
 			{
 				Name:        "name",

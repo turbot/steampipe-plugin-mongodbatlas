@@ -70,7 +70,6 @@ func tableMongoDBAtlasContainer(_ context.Context) *plugin.Table {
 				Name:        "provisioned",
 				Description: "Flag that indicates if the project has clusters deployed in the Network Peering container or Azure VNet.",
 				Type:        proto.ColumnType_BOOL,
-				Transform:   transform.FromField("Provisioned"),
 			},
 			{
 				Name:        "region",
