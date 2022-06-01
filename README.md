@@ -2,7 +2,7 @@
 
 # MongoDB Atlas Plugin for Steampipe
 
-Use SQL to query querying clusters, users, teams and more from MongoDB Atlas
+Use SQL to query clusters, users, teams and more from MongoDB Atlas.
 
 - **[Get started →](https://hub.steampipe.io/plugins/turbot/mongodbatlas)**
 - Documentation: [Table definitions & examples](https://hub.steampipe.io/plugins/turbot/mongodbatlas/tables)
