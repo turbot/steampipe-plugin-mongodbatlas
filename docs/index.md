@@ -2,7 +2,7 @@
 organization: Turbot
 category: ["SaaS"]
 icon_url: "/images/plugins/turbot/mongodbatlas.svg"
-brand_color: "#58AA50"
+brand_color: "#00ED64"
 display_name: MongoDB Atlas
 name: mongodbatlas
 description: Steampipe plugin for querying clusters, users, teams and more from MongoDB Atlas.
@@ -65,10 +65,8 @@ connection "mongodbatlas" {
 
 ```
 
-| Property      | Required/Optional | Description                                                                                                                        |
-| ------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `public_key`  | `Optional`        | The API public key from the MongoDB Atlas console. Can also be set with the `MONGODB_ATLAS_PUBLIC_API_KEY` environment variable.   |
-| `private_key` | `Optional`        | The API private key from the MongoDB Atlas console. Can also be set with the `MONGODB_ATLAS_PRIVATE_API_KEY` environment variable. |
+- `public_key` - (optional) The API public key from the MongoDB Atlas console. Can also be set with the `MONGODB_ATLAS_PUBLIC_API_KEY` environment variable.
+- `private_key` - (optional) The API private key from the MongoDB Atlas console. Can also be set with the `MONGODB_ATLAS_PRIVATE_API_KEY` environment variable.
 
 ## Get involved
 

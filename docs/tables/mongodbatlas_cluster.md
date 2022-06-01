@@ -15,16 +15,16 @@ from
   mongodbatlas_cluster
 ```
 
-### Get auto scaling details of all clusters
+### Get auto-scaling details of all clusters
 
 ```sql
 select
   id,
   name,
-  auto_scaling->>'autoIndexingEnabled' as auto_scaling_auto_indexing_enabled,
-  auto_scaling->>'diskGBEnabled' as auto_scaling_diskgb_enabled,
-  auto_scaling->'compute'->>'enabled' as auto_scaling_compute_enabled,
-  auto_scaling->'compute'->>'scaleDownEnabled' as autos_caling_compute_scale_down_enabled
+  auto_scaling ->> 'autoIndexingEnabled' as auto_scaling_auto_indexing_enabled,
+  auto_scaling ->> 'diskGBEnabled' as auto_scaling_diskgb_enabled,
+  auto_scaling -> 'compute' ->> 'enabled' as auto_scaling_compute_enabled,
+  auto_scaling -> 'compute' ->> 'scaleDownEnabled' as autos_caling_compute_scale_down_enabled
 from
   mongodbatlas_cluster
 ```
@@ -35,8 +35,8 @@ from
 select
   id,
   name,
-  connection_strings->>'standardSrv' as conn_str_standard_srv,
-  connection_strings->>'standard' as conn_str_standard
+  connection_strings ->> 'standardSrv' as conn_str_standard_srv,
+  connection_strings ->> 'standard' as conn_str_standard
 from
   mongodbatlas_cluster
 ```
