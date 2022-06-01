@@ -224,8 +224,8 @@ func listMongoDBAtlasProjectEvents(ctx context.Context, d *plugin.QueryData, h *
 			},
 		}
 
-		if d.Quals["created"] != nil {
-			for _, q := range d.Quals["created"].Quals {
+		if createdQual, ok := d.Quals["created"]; ok {
+			for _, q := range createdQual.Quals {
 				givenTime := q.Value.GetTimestampValue().AsTime()
 				switch q.Operator {
 				case ">":
