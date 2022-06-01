@@ -41,8 +41,8 @@ select
   username,
   r ->> 'databaseName' as database_name
 from
-  mongodbatlas_database_user u,
-  jsonb_array_elements(u.roles) r
+  mongodbatlas_database_user as u,
+  jsonb_array_elements(u.roles) as r
 where
   r ->> 'roleName' = 'readWriteAnyDatabase'
   AND r ->> 'databaseName' = 'admin';
