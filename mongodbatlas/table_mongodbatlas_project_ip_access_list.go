@@ -53,7 +53,7 @@ Atlas supports creating temporary IP access list entries that expire within a us
 			{
 				Name:        "cidr_block",
 				Description: "Range of IP addresses in CIDR notation in this access list entry.",
-				Type:        proto.ColumnType_CIDR,
+				Type:        proto.ColumnType_INET,
 				Transform:   transform.FromField("CIDRBlock"),
 			},
 			{
