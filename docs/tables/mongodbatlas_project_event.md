@@ -30,7 +30,7 @@ order by
   created
 ```
 
-### Check if AWS Encryption key needs rotation
+### Check if AWS encryption key needs rotation
 
 ```sql
 select
