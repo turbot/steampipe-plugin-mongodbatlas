@@ -31,7 +31,7 @@ where
   aws_security_group = 'sgr_mongodbatlas_sec_group'
 ```
 
-### Show CIDR details
+### LIST CIDR details
 
 ```sql
 select
@@ -45,7 +45,7 @@ from
   mongodbatlas_project_ip_access_list;
 ```
 
-### Show IP accesses with public CIDR blocks
+### List IP access with public CIDR blocks
 
 ```sql
 select
