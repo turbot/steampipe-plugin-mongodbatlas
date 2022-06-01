@@ -170,10 +170,6 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 }
 
 func listMongoDBAtlasClusters(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Trace("**************", d.Quals["project_id"])
-	plugin.Logger(ctx).Trace("**************", d.KeyColumnQuals["project_id"])
-	plugin.Logger(ctx).Trace("**************", d.KeyColumnQualString("project_id"))
-
 	project := h.Item.(*mongodbatlas.Project)
 	// Create client
 	client, err := getMongoDBAtlasClient(ctx, d)
