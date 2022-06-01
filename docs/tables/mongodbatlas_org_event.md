@@ -32,14 +32,14 @@ where
 
 ```sql
 select
-   id,
-   event_type_name,
-   target_username
+  id,
+  event_type_name,
+  target_username
 from
-   mongodbatlas_org_event
+  mongodbatlas_org_event
 where
-   event_type_name = 'JOINED_GROUP'
-   and created > (now() - INTERVAL '24 hours')
+  event_type_name = 'JOINED_GROUP'
+  and created > (now() - INTERVAL '24 hours')
 ```
 
 ### Check if daily bill has exceeded set threshold

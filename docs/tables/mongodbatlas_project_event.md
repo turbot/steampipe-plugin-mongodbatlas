@@ -34,10 +34,10 @@ order by
 
 ```sql
 select
-   count(id) > 0
+  count(id) > 0
 from
-   mongodbatlas_project_event
+  mongodbatlas_project_event
 where
-   event_type_name = 'AWS_ENCRYPTION_KEY_NEEDS_ROTATION'
-   and created > (now() - INTERVAL '24 hours')
+  event_type_name = 'AWS_ENCRYPTION_KEY_NEEDS_ROTATION'
+  and created > (now() - INTERVAL '24 hours')
 ```
