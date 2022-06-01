@@ -23,7 +23,6 @@ func tableMongoDBAtlasX509AuthenticationDatabaseUser(_ context.Context) *plugin.
 				Name:        "id",
 				Description: "Serial number of this certificate.",
 				Type:        proto.ColumnType_INT,
-				Transform:   transform.FromField("ID"),
 			},
 			{
 				Name:        "subject",
@@ -46,11 +45,6 @@ func tableMongoDBAtlasX509AuthenticationDatabaseUser(_ context.Context) *plugin.
 				Type:        proto.ColumnType_INT,
 			},
 			{
-				Name:        "certificate",
-				Description: "Certificate Data",
-				Type:        proto.ColumnType_STRING,
-			},
-			{
 				Name:        "project_id",
 				Description: "Unique identifier of the Atlas project to which this certificate belongs.",
 				Type:        proto.ColumnType_STRING,
@@ -61,7 +55,7 @@ func tableMongoDBAtlasX509AuthenticationDatabaseUser(_ context.Context) *plugin.
 				Name:        "title",
 				Description: "Title of the resource.",
 				Type:        proto.ColumnType_STRING,
-				Transform:   transform.FromField("Name"),
+				Transform:   transform.FromField("Subject"),
 			},
 		},
 	}
@@ -94,12 +88,12 @@ func listDatabaseUserX509Auth(ctx context.Context, d *plugin.QueryData, h *plugi
 
 		// get the certificates for each database user
 		for _, dbUser := range databaseUsers {
-			x509Stuff, _, err := client.X509AuthDBUsers.GetUserCertificates(ctx, projectId, dbUser.Username)
+			x509CertsForUser, _, err := client.X509AuthDBUsers.GetUserCertificates(ctx, projectId, dbUser.Username)
 			if err != nil {
 				plugin.Logger(ctx).Error("x509_authentication_database_user.listDatabaseUserX509Auth", "query_error", err)
 				return nil, err
 			}
-			for _, uc := range x509Stuff {
+			for _, uc := range x509CertsForUser {
 				d.StreamListItem(ctx, uc)
 				// Context can be cancelled due to manual cancellation or the limit has been hit
 				if d.QueryStatus.RowsRemaining(ctx) == 0 {
