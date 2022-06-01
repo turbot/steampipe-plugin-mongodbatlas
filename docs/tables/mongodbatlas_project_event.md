@@ -25,7 +25,9 @@ select
 from
   mongodbatlas_project_event
 where
-  target_username='billy@example.com'
+  target_username = 'billy@example.com'
+order by
+  created
 ```
 
 ### Check if AWS Encryption key needs rotation

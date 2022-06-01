@@ -22,10 +22,39 @@ from
 
 ```sql
 select
+  project_id,
   ip_address,
   cidr_block
 from
   mongodbatlas_project_ip_access_list
 where
   aws_security_group = 'sgr_mongodbatlas_sec_group'
+```
+
+### Show CIDR details
+
+```sql
+select
+  project_id,
+  cidr_block,
+  host(cidr_block),
+  broadcast(cidr_block),
+  netmask(cidr_block),
+  network(cidr_block)
+from
+  mongodbatlas_project_ip_access_list;
+```
+
+### Show IP accesses with public CIDR blocks
+
+```sql
+select
+  project_id,
+  cidr_block
+from
+  mongodbatlas_project_ip_access_list
+where
+  not cidr_block <<= '10.0.0.0/8'
+  and not cidr_block <<= '192.168.0.0/16'
+  and not cidr_block <<= '172.16.0.0/12';
 ```

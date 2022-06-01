@@ -23,7 +23,7 @@ from
   mongodbatlas_project
 ```
 
-### List projects with clusters beyond a threshold
+### List projects with at least 1 cluster
 
 ```sql
 select
@@ -33,5 +33,5 @@ select
 from
   mongodbatlas_project
 where
-  cluster_count > 10
+  cluster_count > 0
 ```

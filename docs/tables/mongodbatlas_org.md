@@ -14,7 +14,7 @@ from
   mongodbatlas_org;
 ```
 
-### List deleted
+### List deleted organizations
 
 ```sql
 select
