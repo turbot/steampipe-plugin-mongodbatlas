@@ -1,3 +1,9 @@
+## v0.1.1 [2022-09-27]
+
+_Bug fixes_
+
+- Fixed inconsistent table names in `mongodbatlas_org_event` and `mongodbatlas_project_event` tables. (([#7](https://github.com/turbot/steampipe-plugin-mongodbatlas/pull/7))
+
 ## v0.1.0 [2022-09-27]
 
 _Dependencies_
