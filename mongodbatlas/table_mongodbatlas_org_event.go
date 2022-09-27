@@ -12,7 +12,7 @@ import (
 
 func tableMongoDBAtlasOrgEvents(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
-		Name:        "mongodbatlas_org_events",
+		Name:        "mongodbatlas_org_event",
 		Description: "Org Events allows you to list events for the parent organization of the configured project.",
 		List: &plugin.ListConfig{
 			Hydrate:       listMongoDBAtlasOrgEvents,
