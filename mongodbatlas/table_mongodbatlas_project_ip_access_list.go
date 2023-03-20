@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
@@ -120,7 +120,7 @@ func listMongoDBAtlasProjectIpAccessList(ctx context.Context, d *plugin.QueryDat
 		for _, projectIPAccessList := range projectIpAccessLists.Results {
 			d.StreamListItem(ctx, projectIPAccessList)
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
@@ -143,16 +143,16 @@ func getAtlasProjectIpAccessList(ctx context.Context, d *plugin.QueryData, h *pl
 		plugin.Logger(ctx).Error("mongodbatlas_project_ip_access_list.getAtlasProjectIpAccessList", "connection_error", err)
 		return nil, err
 	}
-	projectId := d.KeyColumnQuals["project_id"].GetStringValue()
+	projectId := d.EqualsQuals["project_id"].GetStringValue()
 
 	listName := ""
 
-	if len(d.KeyColumnQuals["aws_security_group"].GetStringValue()) != 0 {
-		listName = d.KeyColumnQuals["aws_security_group"].GetStringValue()
-	} else if len(d.KeyColumnQuals["cidr_block"].GetInetValue().GetCidr()) != 0 {
-		listName = d.KeyColumnQuals["cidr_block"].GetInetValue().GetCidr()
-	} else if len(d.KeyColumnQuals["ip_address"].GetInetValue().GetAddr()) != 0 {
-		listName = d.KeyColumnQuals["ip_address"].GetInetValue().GetAddr()
+	if len(d.EqualsQuals["aws_security_group"].GetStringValue()) != 0 {
+		listName = d.EqualsQuals["aws_security_group"].GetStringValue()
+	} else if len(d.EqualsQuals["cidr_block"].GetInetValue().GetCidr()) != 0 {
+		listName = d.EqualsQuals["cidr_block"].GetInetValue().GetCidr()
+	} else if len(d.EqualsQuals["ip_address"].GetInetValue().GetAddr()) != 0 {
+		listName = d.EqualsQuals["ip_address"].GetInetValue().GetAddr()
 	} else {
 		return nil, fmt.Errorf("one of 'aws_security_group', 'cidr_block' or 'ip_address' is required")
 	}

@@ -3,9 +3,9 @@ package mongodbatlas
 import (
 	"context"
 
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
@@ -114,7 +114,7 @@ func listMongoDBAtlasContainers(ctx context.Context, d *plugin.QueryData, h *plu
 	}
 
 	pageNumber := 1
-	providerName := d.KeyColumnQuals["provider_name"].GetStringValue()
+	providerName := d.EqualsQuals["provider_name"].GetStringValue()
 
 	for {
 		listOptions := &mongodbatlas.ContainersListOptions{
@@ -141,7 +141,7 @@ func listMongoDBAtlasContainers(ctx context.Context, d *plugin.QueryData, h *plu
 			}
 			d.StreamListItem(ctx, c)
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
@@ -164,8 +164,8 @@ func getContainer(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateDat
 		return nil, err
 	}
 
-	projectId := d.KeyColumnQuals["project_id"].GetStringValue()
-	containerId := d.KeyColumnQuals["event_id"].GetStringValue()
+	projectId := d.EqualsQuals["project_id"].GetStringValue()
+	containerId := d.EqualsQuals["event_id"].GetStringValue()
 
 	event, _, err := client.Containers.Get(ctx, projectId, containerId)
 

@@ -3,9 +3,9 @@ package mongodbatlas
 import (
 	"context"
 
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
@@ -105,7 +105,7 @@ func listMongoDBAtlasServerlessInstances(ctx context.Context, d *plugin.QueryDat
 			d.StreamListItem(ctx, cluster)
 
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
@@ -127,8 +127,8 @@ func getAtlasServerlessInstance(ctx context.Context, d *plugin.QueryData, h *plu
 		plugin.Logger(ctx).Error("mongodbatlas_serverless_instance.getAtlasServerlessInstances", "connection_error", err)
 		return nil, err
 	}
-	clusterName := d.KeyColumnQuals["name"].GetStringValue()
-	projectId := d.KeyColumnQuals["project_id"].GetStringValue()
+	clusterName := d.EqualsQuals["name"].GetStringValue()
+	projectId := d.EqualsQuals["project_id"].GetStringValue()
 
 	cluster, _, err := client.ServerlessInstances.Get(ctx, projectId, clusterName)
 	if err != nil {
