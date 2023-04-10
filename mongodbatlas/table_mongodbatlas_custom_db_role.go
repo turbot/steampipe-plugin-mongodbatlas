@@ -3,9 +3,9 @@ package mongodbatlas
 import (
 	"context"
 
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
@@ -94,7 +94,7 @@ func listMongoDBAtlasCustomDBRoles(ctx context.Context, d *plugin.QueryData, h *
 			}
 			d.StreamListItem(ctx, r)
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
@@ -117,8 +117,8 @@ func getAtlasCustomDBRole(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 		return nil, err
 	}
 
-	roleName := d.KeyColumnQuals["role_name"].GetStringValue()
-	projectId := d.KeyColumnQuals["project_id"].GetStringValue()
+	roleName := d.EqualsQuals["role_name"].GetStringValue()
+	projectId := d.EqualsQuals["project_id"].GetStringValue()
 
 	role, _, err := client.CustomDBRoles.Get(ctx, projectId, roleName)
 	if err != nil {

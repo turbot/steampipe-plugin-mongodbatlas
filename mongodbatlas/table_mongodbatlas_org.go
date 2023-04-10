@@ -3,9 +3,9 @@ package mongodbatlas
 import (
 	"context"
 
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
@@ -52,8 +52,8 @@ func listMongoDBAtlasOrg(ctx context.Context, d *plugin.QueryData, h *plugin.Hyd
 		return nil, err
 	}
 
-	if len(d.KeyColumnQuals["id"].GetStringValue()) != 0 {
-		org, _, err := client.Organizations.Get(ctx, d.KeyColumnQuals["id"].GetStringValue())
+	if len(d.EqualsQuals["id"].GetStringValue()) != 0 {
+		org, _, err := client.Organizations.Get(ctx, d.EqualsQuals["id"].GetStringValue())
 		if err != nil {
 			return nil, err
 		}
@@ -83,7 +83,7 @@ func listMongoDBAtlasOrg(ctx context.Context, d *plugin.QueryData, h *plugin.Hyd
 		for _, org := range orgs.Results {
 			d.StreamListItem(ctx, org)
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}

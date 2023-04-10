@@ -3,9 +3,9 @@ package mongodbatlas
 import (
 	"context"
 
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
@@ -62,7 +62,7 @@ func getMongoDBAtlasProject(ctx context.Context, d *plugin.QueryData, h *plugin.
 		return nil, err
 	}
 
-	projectId := d.KeyColumnQuals["id"].GetStringValue()
+	projectId := d.EqualsQuals["id"].GetStringValue()
 
 	project, _, err := client.Projects.GetOneProject(ctx, projectId)
 	if err != nil {
@@ -79,8 +79,8 @@ func listMongoDBAtlasProjects(ctx context.Context, d *plugin.QueryData, h *plugi
 		return nil, err
 	}
 
-	if len(d.KeyColumnQualString("project_id")) != 0 {
-		project, _, err := client.Projects.GetOneProject(ctx, d.KeyColumnQualString("project_id"))
+	if len(d.EqualsQualString("project_id")) != 0 {
+		project, _, err := client.Projects.GetOneProject(ctx, d.EqualsQualString("project_id"))
 		if err != nil {
 			return nil, err
 		}
@@ -109,7 +109,7 @@ func listMongoDBAtlasProjects(ctx context.Context, d *plugin.QueryData, h *plugi
 		for _, project := range projects.Results {
 			d.StreamListItem(ctx, project)
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}

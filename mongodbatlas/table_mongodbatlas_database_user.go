@@ -3,9 +3,9 @@ package mongodbatlas
 import (
 	"context"
 
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
@@ -103,7 +103,7 @@ func listMongoDBAtlasDatabaseUsers(ctx context.Context, d *plugin.QueryData, h *
 		for _, databaseUser := range databaseUsers {
 			d.StreamListItem(ctx, databaseUser)
 			// Context can be cancelled due to manual cancellation or the limit has been hit
-			if d.QueryStatus.RowsRemaining(ctx) == 0 {
+			if d.RowsRemaining(ctx) == 0 {
 				return nil, nil
 			}
 		}
@@ -125,9 +125,9 @@ func getAtlasDatabaseUser(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 		plugin.Logger(ctx).Error("mongodbatlas_database_user.getAtlasDatabaseUser", "connection_error", err)
 		return nil, err
 	}
-	username := d.KeyColumnQuals["username"].GetStringValue()
-	databaseName := d.KeyColumnQuals["database_name"].GetStringValue()
-	projectId := d.KeyColumnQuals["project_id"].GetStringValue()
+	username := d.EqualsQuals["username"].GetStringValue()
+	databaseName := d.EqualsQuals["database_name"].GetStringValue()
+	projectId := d.EqualsQuals["project_id"].GetStringValue()
 
 	databaseUser, _, err := client.DatabaseUsers.Get(ctx, databaseName, projectId, username)
 	if err != nil {

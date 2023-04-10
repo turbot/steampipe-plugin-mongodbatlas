@@ -10,7 +10,7 @@ import (
 
 	"github.com/mongodb-forks/digest"
 	"github.com/turbot/steampipe-plugin-mongodbatlas/constants"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
