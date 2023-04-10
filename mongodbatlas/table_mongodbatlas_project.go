@@ -79,8 +79,8 @@ func listMongoDBAtlasProjects(ctx context.Context, d *plugin.QueryData, h *plugi
 		return nil, err
 	}
 
-	if len(d.KeyColumnQualString("project_id")) != 0 {
-		project, _, err := client.Projects.GetOneProject(ctx, d.KeyColumnQualString("project_id"))
+	if len(d.EqualsQualString("project_id")) != 0 {
+		project, _, err := client.Projects.GetOneProject(ctx, d.EqualsQualString("project_id"))
 		if err != nil {
 			return nil, err
 		}

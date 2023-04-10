@@ -223,8 +223,8 @@ func getMongoDBAtlasCluster(ctx context.Context, d *plugin.QueryData, h *plugin.
 		plugin.Logger(ctx).Error("mongodbatlas_cluster.getAtlasCluster", "connection_error", err)
 		return nil, err
 	}
-	projectId := d.KeyColumnQualString("project_id")
-	clusterName := d.KeyColumnQualString("name")
+	projectId := d.EqualsQualString("project_id")
+	clusterName := d.EqualsQualString("name")
 
 	cluster, _, err := client.Clusters.Get(ctx, projectId, clusterName)
 	if err != nil {
