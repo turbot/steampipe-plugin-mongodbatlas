@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/mongodb-forks/digest v1.0.3
-	github.com/turbot/steampipe-plugin-sdk/v5 v5.6.1
+	github.com/turbot/steampipe-plugin-sdk/v5 v5.6.2
 	go.mongodb.org/atlas v0.15.0
 )
 
