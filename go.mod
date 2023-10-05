@@ -3,7 +3,7 @@ module github.com/turbot/steampipe-plugin-mongodbatlas
 go 1.21
 
 require (
-	github.com/mongodb-forks/digest v1.0.3
+	github.com/mongodb-forks/digest v1.0.5
 	github.com/turbot/steampipe-plugin-sdk/v5 v5.6.2
 	go.mongodb.org/atlas v0.15.0
 )
