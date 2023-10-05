@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/mongodb-forks/digest v1.0.3
 	github.com/turbot/steampipe-plugin-sdk/v5 v5.6.2
-	go.mongodb.org/atlas v0.15.0
+	go.mongodb.org/atlas v0.33.0
 )
 
 require (
@@ -69,7 +69,6 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/oklog/run v1.0.0 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
-	github.com/openlyinc/pointy v1.1.2 // indirect
 	github.com/pegasus-kv/thrift v0.13.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/client_golang v1.14.0 // indirect
