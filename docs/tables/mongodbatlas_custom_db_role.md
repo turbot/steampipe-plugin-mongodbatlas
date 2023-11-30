@@ -1,12 +1,20 @@
-# Table: mongodbatlas_custom_db_role
+---
+title: "Steampipe Table: mongodbatlas_custom_db_role - Query MongoDB Atlas Custom Database Roles using SQL"
+description: "Allows users to query Custom Database Roles in MongoDB Atlas, specifically the role name, database name, and associated actions, providing insights into the role-based access control."
+---
 
-Custom roles supports a subset of MongoDB privilege actions. These are defined at the project level, for all clusters in the project.
+# Table: mongodbatlas_custom_db_role - Query MongoDB Atlas Custom Database Roles using SQL
 
-Using custom MongoDB enables you to specify custom sets of actions which cannot be described by the built-in Atlas database user privileges.
+MongoDB Atlas Custom Database Roles represent a collection of permissions that you can assign to users. These roles can be used to grant specific privileges to the users on a specific database. The privileges determine the operations that the users can perform on the database.
+
+## Table Usage Guide
+
+The `mongodbatlas_custom_db_role` table provides insights into custom database roles within MongoDB Atlas. As a database administrator, explore specific details about these roles, including database name, role name, and associated actions. Utilize it to manage and control access to your databases, ensuring that users have the appropriate permissions for their roles.
 
 ## Examples
 
 ### Basic info
+Explore which custom database roles have been assigned in your MongoDB Atlas and identify the associated actions. This can help in understanding user permissions and improve the security management of your database.
 
 ```sql
 select
@@ -17,6 +25,7 @@ from
 ```
 
 ### List roles which have the 'FIND' action defined
+Explore which roles have the 'FIND' action defined to understand the distribution of permissions within your database, which can help in maintaining security and access controls.
 
 ```sql
 select
@@ -29,6 +38,7 @@ where
 ```
 
 ### List roles which have at least one inherited role
+Discover which roles in your MongoDB Atlas database have inherited roles, allowing you to better understand role hierarchies and permissions in your database system. This can be particularly useful in larger systems where role management may become complex.
 
 ```sql
 select

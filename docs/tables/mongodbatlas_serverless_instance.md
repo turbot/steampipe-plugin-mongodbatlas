@@ -1,12 +1,20 @@
-# Table: mongodbatlas_serverless_instance
+---
+title: "Steampipe Table: mongodbatlas_serverless_instance - Query MongoDB Atlas Serverless Instances using SQL"
+description: "Allows users to query MongoDB Atlas Serverless Instances, providing insights into the configuration, status, and performance of these resources."
+---
 
-Serverless instances in MongoDB Atlas are instances which are billed on usage, rather than time like in normal clusters.
+# Table: mongodbatlas_serverless_instance - Query MongoDB Atlas Serverless Instances using SQL
 
-Serverless instances provide a limited feature set compared to full-blown clusters in MongoDB Atlas.
+MongoDB Atlas Serverless Instances are a part of MongoDB's fully managed cloud database service. This service allows you to deploy, operate, and scale MongoDB databases in the cloud. Serverless instances provide on-demand, pay-per-use access to your MongoDB data, scaling automatically to meet your application's read and write workload needs.
+
+## Table Usage Guide
+
+The `mongodbatlas_serverless_instance` table provides insights into the configuration and performance of MongoDB Atlas Serverless Instances. As a Database Administrator or Developer, you can use this table to examine details about these instances, including their configuration, status, and associated metrics. This can help you optimize resource usage, troubleshoot performance issues, and ensure the smooth operation of your MongoDB databases in the cloud.
 
 ## Examples
 
 ### Basic info
+Explore which serverless instances are in use in your MongoDB Atlas setup. This can help you monitor and manage your resources more effectively.
 
 ```sql
 select
@@ -17,6 +25,7 @@ from
 ```
 
 ### Get connection details for serverless instances
+Explore the connection details for your serverless instances to understand how to connect to them in different scenarios. This can be particularly useful when setting up new applications or troubleshooting connectivity issues.
 
 ```sql
 select
@@ -29,6 +38,7 @@ from
 ```
 
 ### List instances with provider backups disabled
+Explore which serverless instances have provider backups disabled to identify potential data loss risks and prioritize areas for improved data security.
 
 ```sql
 select

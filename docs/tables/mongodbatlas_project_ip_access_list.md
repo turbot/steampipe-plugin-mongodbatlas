@@ -1,14 +1,20 @@
-# Table: mongodbatlas_project_ip_access_list
+---
+title: "Steampipe Table: mongodbatlas_project_ip_access_list - Query MongoDB Atlas Project IP Access Lists using SQL"
+description: "Allows users to query Project IP Access Lists in MongoDB Atlas, specifically providing information about the IP addresses or CIDR blocks that can access MongoDB Atlas project resources."
+---
 
-Atlas only allows client connections to the database deployment from entries in the project's IP access list. Each entry is either a single IP address or a CIDR-notated range of addresses. For AWS clusters with one or more VPC Peering connections to the same AWS region, you can specify a Security Group associated with a peered VPC.
+# Table: mongodbatlas_project_ip_access_list - Query MongoDB Atlas Project IP Access Lists using SQL
 
-The IP access list applies to all database deployments in the project and can have up to 200 IP access list entries, with the following exception: projects with an existing sharded cluster created before August 25, 2017 can have up to 100 IP access list entries.
+A MongoDB Atlas Project IP Access List is a security feature that allows you to control which IP addresses or CIDR blocks can access your MongoDB Atlas project resources. This feature is designed to help you protect your MongoDB Atlas databases by limiting access to only trusted IP addresses or CIDR blocks. By using this feature, you can significantly reduce the attack surface of your MongoDB Atlas databases.
 
-Atlas supports creating temporary IP access list entries that expire within a user-configurable 7-day period.
+## Table Usage Guide
+
+The `mongodbatlas_project_ip_access_list` table provides insights into Project IP Access Lists within MongoDB Atlas. As a database administrator or security analyst, explore details about these access lists through this table, including the allowed IP addresses or CIDR blocks, comments, and associated metadata. Utilize it to uncover information about access lists, such as those with specific IP addresses or CIDR blocks, and to ensure that only trusted sources have access to your MongoDB Atlas project resources.
 
 ## Examples
 
 ### Basic info
+Explore which IP addresses have access to your MongoDB Atlas project. This can help in assessing the security and control of who can access your project.
 
 ```sql
 select
@@ -19,6 +25,7 @@ from
 ```
 
 ### List all IP access lists which belong to a specific `aws security group`
+Identify the IP access lists linked to a certain AWS security group to gain insights into the security configurations of your MongoDB Atlas project. This could be particularly useful for reviewing access permissions and managing security measures.
 
 ```sql
 select
@@ -32,6 +39,7 @@ where
 ```
 
 ### LIST CIDR details
+Gain insights into the details of the IP access list within a MongoDB Atlas project. This can be useful to understand the range of IP addresses that have been given access, which is crucial for maintaining network security and accessibility.
 
 ```sql
 select
@@ -46,6 +54,7 @@ from
 ```
 
 ### List IP access with public CIDR blocks
+Identify the projects that have IP access from public CIDR blocks, excluding those from private ranges. This could be used to assess security measures and ensure that only intended networks have access.
 
 ```sql
 select

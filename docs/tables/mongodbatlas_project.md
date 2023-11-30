@@ -1,19 +1,20 @@
-# Table: mongodbatlas_project
+---
+title: "Steampipe Table: mongodbatlas_project - Query MongoDB Atlas Projects using SQL"
+description: "Allows users to query MongoDB Atlas Projects, providing detailed information about each project's configuration, status, and associated resources."
+---
 
-Within an organization, Projects are used to:
+# Table: mongodbatlas_project - Query MongoDB Atlas Projects using SQL
 
-- Isolate different environments (for instance, development/qa/prod environments) from each other.
-- Associate different users or teams with different environments, or give different permissions to users in different environments.
-- Maintain separate cluster security configurations. For example:
-  - Create/manage different sets of database user credentials for each project.
-  - Isolate networks in different VPCs.
-- Create different alert settings. For example, configure alerts for Production environments differently than Development environments.
+A MongoDB Atlas Project is a logical grouping of resources that are deployed in MongoDB Atlas, MongoDB's fully managed cloud database service. Projects in MongoDB Atlas serve as a means to manage access and security for the databases and clusters within them. It provides a centralized way to manage database configurations, user roles, IP whitelists, and more.
 
-This table lists a single entry which contains the details of the `project_id` configured.
+## Table Usage Guide
+
+The `mongodbatlas_project` table provides insights into projects within MongoDB Atlas. As a database administrator or DevOps engineer, explore project-specific details through this table, including project ID, cluster count, and associated metadata. Utilize it to uncover information about projects, such as their associated clusters, user roles, and IP whitelists.
 
 ## Examples
 
 ### Basic info
+Explore the basic details of your MongoDB Atlas projects by identifying each project's unique identifier and name. This can help you keep track of your projects and maintain an organized database.
 
 ```sql
 select
@@ -24,6 +25,7 @@ from
 ```
 
 ### List projects with at least 1 cluster
+Discover the projects that have one or more clusters associated with them, allowing you to identify areas of resource allocation and usage. This can be beneficial in understanding project resource utilization and managing resources efficiently.
 
 ```sql
 select
