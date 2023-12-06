@@ -11,6 +11,9 @@ MongoDB Atlas Teams is a feature within MongoDB Atlas that allows you to manage 
 
 The `mongodbatlas_team` table provides insights into Teams within MongoDB Atlas. As a Database Administrator, explore team-specific details through this table, including team IDs, names, and associated users. Utilize it to uncover information about teams, such as user access levels, the distribution of roles among team members, and the overall structure of teams within your MongoDB Atlas environment.
 
+**Important Notes**
+- Needs `Organization Owner` access in the provided key pair.
+
 ## Examples
 
 ### Basic info
