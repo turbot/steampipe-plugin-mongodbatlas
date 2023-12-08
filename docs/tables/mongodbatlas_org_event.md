@@ -16,7 +16,17 @@ The `mongodbatlas_org_event` table provides insights into event activities withi
 ### Basic info
 Explore which events are occurring within your MongoDB Atlas organization. This allows you to identify the associated project and target user, providing insights into user activity and project engagement.
 
-```sql
+```sql+postgres
+select
+  id,
+  event_type_name,
+  project_id,
+  target_username
+from
+  mongodbatlas_org_event;
+```
+
+```sql+sqlite
 select
   id,
   event_type_name,
@@ -29,7 +39,17 @@ from
 ### List all events raised by a specific user
 Explore which events have been triggered by a specific user within your organization. This is particularly useful for auditing user activity and understanding individual user behavior.
 
-```sql
+```sql+postgres
+select
+  id,
+  event_type_name
+from
+  mongodbatlas_org_event
+where
+  target_username = 'billy@example.com';
+```
+
+```sql+sqlite
 select
   id,
   event_type_name
@@ -42,7 +62,7 @@ where
 ### List all events where a user has joined a project in the last 24 hours
 Determine the instances where a user has joined a project in the past day. This can be useful for tracking user activity and engagement within a specific time frame.
 
-```sql
+```sql+postgres
 select
   id,
   event_type_name,
@@ -54,10 +74,31 @@ where
   and created > (now() - INTERVAL '24 hours');
 ```
 
+```sql+sqlite
+select
+  id,
+  event_type_name,
+  target_username
+from
+  mongodbatlas_org_event
+where
+  event_type_name = 'JOINED_GROUP'
+  and created > datetime('now', '-24 hours');
+```
+
 ### Check if daily bill has exceeded set threshold
 Explore how often your daily bill has surpassed a predetermined limit, offering a way to monitor your expenses and manage your budget effectively. This helps in keeping track of your spending and avoiding unexpected high costs.
 
-```sql
+```sql+postgres
+select
+  count(id)
+from
+  mongodbatlas_org_event
+where
+  event_type_name = 'DAILY_BILL_OVER_THRESHOLD';
+```
+
+```sql+sqlite
 select
   count(id)
 from

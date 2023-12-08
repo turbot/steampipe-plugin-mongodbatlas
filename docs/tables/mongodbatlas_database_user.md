@@ -16,7 +16,15 @@ The `mongodbatlas_database_user` table provides insights into database users wit
 ### Basic info
 Explore which MongoDB Atlas database users are currently active, providing a quick overview of user access and potential security risks. This is useful for administrators seeking to manage user access and maintain database security.
 
-```sql
+```sql+postgres
+select
+  id,
+  name
+from
+  mongodbatlas_database_user;
+```
+
+```sql+sqlite
 select
   id,
   name
@@ -27,7 +35,7 @@ from
 ### List all scopes for each user
 Explore the range of access each user has in your MongoDB Atlas database. This can assist in identifying potential security risks and ensuring appropriate access levels.
 
-```sql
+```sql+postgres
 select
   username,
   jsonb_array_elements(scopes) as scopes
@@ -35,10 +43,19 @@ from
   mongodbatlas_database_user;
 ```
 
+```sql+sqlite
+select
+  username,
+  json_each.value as scopes
+from
+  mongodbatlas_database_user,
+  json_each(scopes);
+```
+
 ### List all roles for each user
 Explore which roles are assigned to each user in your MongoDB Atlas database, helping you to understand user permissions and ensure appropriate access control.
 
-```sql
+```sql+postgres
 select
   username,
   jsonb_array_elements(roles) as roles
@@ -46,10 +63,19 @@ from
   mongodbatlas_database_user;
 ```
 
+```sql+sqlite
+select
+  username,
+  roles.value as roles
+from
+  mongodbatlas_database_user,
+  json_each(roles);
+```
+
 ### List all database users who have 'readWriteAnyDatabase' role on the database 'admin'
 Explore which database users have been granted the 'readWriteAnyDatabase' role on the 'admin' database. This can be useful in assessing user permissions and ensuring appropriate access control within your database environment.
 
-```sql
+```sql+postgres
 select
   username,
   r ->> 'databaseName' as database_name
@@ -59,4 +85,16 @@ from
 where
   r ->> 'roleName' = 'readWriteAnyDatabase'
   AND r ->> 'databaseName' = 'admin';
+```
+
+```sql+sqlite
+select
+  username,
+  json_extract(r.value, '$.databaseName') as database_name
+from
+  mongodbatlas_database_user as u,
+  json_each(u.roles) as r
+where
+  json_extract(r.value, '$.roleName') = 'readWriteAnyDatabase'
+  AND json_extract(r.value, '$.databaseName') = 'admin';
 ```

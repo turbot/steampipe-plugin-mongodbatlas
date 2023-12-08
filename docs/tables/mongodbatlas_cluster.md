@@ -16,7 +16,16 @@ The `mongodbatlas_cluster` table provides insights into MongoDB Atlas Clusters. 
 ### Basic info
 Explore which MongoDB Atlas clusters are associated with specific project IDs to streamline project management and resource allocation.
 
-```sql
+```sql+postgres
+select
+  id,
+  name,
+  project_id
+from
+  mongodbatlas_cluster;
+```
+
+```sql+sqlite
 select
   id,
   name,
@@ -28,7 +37,7 @@ from
 ### Get auto-scaling details of all clusters
 Explore the auto-scaling configurations of your clusters to understand if automatic indexing, disk space adjustments, and scale-down options are enabled. This can be useful in managing resources and optimizing performance in your database environment.
 
-```sql
+```sql+postgres
 select
   id,
   name,
@@ -40,10 +49,22 @@ from
   mongodbatlas_cluster;
 ```
 
+```sql+sqlite
+select
+  id,
+  name,
+  json_extract(auto_scaling, '$.autoIndexingEnabled') as auto_scaling_auto_indexing_enabled,
+  json_extract(auto_scaling, '$.diskGBEnabled') as auto_scaling_diskgb_enabled,
+  json_extract(auto_scaling, '$.compute.enabled') as auto_scaling_compute_enabled,
+  json_extract(auto_scaling, '$.compute.scaleDownEnabled') as autos_caling_compute_scale_down_enabled
+from
+  mongodbatlas_cluster;
+```
+
 ### Get connection details for clusters
 Discover the connection details for clusters to better manage and troubleshoot your MongoDB Atlas setup. This helps in simplifying the process of connecting to your clusters.
 
-```sql
+```sql+postgres
 select
   id,
   name,
@@ -53,10 +74,30 @@ from
   mongodbatlas_cluster;
 ```
 
+```sql+sqlite
+select
+  id,
+  name,
+  json_extract(connection_strings, '$.standardSrv') as conn_str_standard_srv,
+  json_extract(connection_strings, '$.standard') as conn_str_standard
+from
+  mongodbatlas_cluster;
+```
+
 ### Get all clusters which are replica sets
 Determine the areas in which MongoDB Atlas clusters are functioning as replica sets. This can help in managing resource allocation and understanding the distribution of your database workloads.
 
-```sql
+```sql+postgres
+select
+  id,
+  name
+from
+  mongodbatlas_cluster
+where
+  num_shards = 1;
+```
+
+```sql+sqlite
 select
   id,
   name
@@ -69,7 +110,7 @@ where
 ### List clusters with provider backups disabled
 Discover the segments that have provider backups disabled in MongoDB Atlas clusters. This can help identify potential risk areas where data might not be recoverable in the event of a system failure.
 
-```sql
+```sql+postgres
 select
   name,
   cluster_type,
@@ -78,4 +119,15 @@ from
   mongodbatlas_cluster
 where
   provider_backup_enabled = false;
+```
+
+```sql+sqlite
+select
+  name,
+  cluster_type,
+  provider_backup_enabled
+from
+  mongodbatlas_cluster
+where
+  provider_backup_enabled = 0;
 ```

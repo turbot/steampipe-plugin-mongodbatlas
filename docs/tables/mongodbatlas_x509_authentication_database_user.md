@@ -16,7 +16,17 @@ The `mongodbatlas_x509_authentication_database_user` table provides insights int
 ### Basic info
 Gain insights into the X.509 authentication database user by identifying instances where a specific username is used. This is useful for understanding user activity and managing access controls.
 
-```sql
+```sql+postgres
+select
+  id,
+  subject
+from
+  mongodbatlas_x509_authentication_database_user
+where
+  username = 'billy';
+```
+
+```sql+sqlite
 select
   id,
   subject
@@ -29,7 +39,7 @@ where
 ### List all X.509 certificates expiring in 15 days
 Discover the segments that have MongoDB Atlas X.509 certificates nearing expiration in the next 15 days. This helps in proactive certificate management, preventing potential access issues due to expired certificates.
 
-```sql
+```sql+postgres
 select
   id,
   subject
@@ -39,10 +49,20 @@ where
   not_after < (now() + INTERVAL '15 days');
 ```
 
+```sql+sqlite
+select
+  id,
+  subject
+from
+  mongodbatlas_x509_authentication_database_user
+where
+  not_after < datetime('now', '+15 days');
+```
+
 ### List all X.509 certificates expiring after 90 days
 Discover the segments that hold X.509 certificates with an extended validity period. This can be useful in identifying the certificates that won't require immediate renewal, allowing you to better manage your certificate renewal timelines.
 
-```sql
+```sql+postgres
 select
   id,
   subject
@@ -52,10 +72,30 @@ where
   not_after > (now() + INTERVAL '90 days');
 ```
 
+```sql+sqlite
+select
+  id,
+  subject
+from
+  mongodbatlas_x509_authentication_database_user
+where
+  not_after > datetime('now', '+90 days');
+```
+
 ### List all X.509 certificates expiring within 2 months
 Explore which X.509 certificates are on the verge of expiration. This is crucial to avoid service interruptions due to expired certificates.
 
-```sql
+```sql+postgres
+select
+  id,
+  subject
+from
+  mongodbatlas_x509_authentication_database_user
+where
+  months_until_expiration <= 2;
+```
+
+```sql+sqlite
 select
   id,
   subject

@@ -16,7 +16,15 @@ The `mongodbatlas_org` table provides insights into the organizations within Mon
 ### Basic info
 Explore the basic information of your MongoDB Atlas organizations by identifying their unique identifiers and names. This can be beneficial for managing and tracking your organizations in a more organized manner.
 
-```sql
+```sql+postgres
+select
+  id,
+  name
+from
+  mongodbatlas_org;
+```
+
+```sql+sqlite
 select
   id,
   name
@@ -27,7 +35,7 @@ from
 ### List deleted organizations
 Discover the segments that have been removed from your MongoDB Atlas organizations. This is useful for auditing and understanding changes in your organizational structure.
 
-```sql
+```sql+postgres
 select
   id,
   name
@@ -35,4 +43,14 @@ from
   mongodbatlas_org
 where
   is_deleted;
+```
+
+```sql+sqlite
+select
+  id,
+  name
+from
+  mongodbatlas_org
+where
+  is_deleted = 1;
 ```

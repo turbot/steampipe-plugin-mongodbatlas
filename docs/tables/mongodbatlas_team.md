@@ -19,7 +19,15 @@ The `mongodbatlas_team` table provides insights into Teams within MongoDB Atlas.
 ### Basic info
 Explore which team IDs and names are available in your MongoDB Atlas environment. This can be useful for managing access and permissions within your database system.
 
-```sql
+```sql+postgres
+select
+  id,
+  name
+from
+  mongodbatlas_team;
+```
+
+```sql+sqlite
 select
   id,
   name
@@ -30,11 +38,21 @@ from
 ### List users in all teams
 Identify all users across various teams to understand team composition and collaboration dynamics in your MongoDB Atlas environment.
 
-```sql
+```sql+postgres
 select
   id,
   name,
   jsonb_array_elements(users) as user
 from
   mongodbatlas_team;
+```
+
+```sql+sqlite
+select
+  id,
+  name,
+  user.value as user
+from
+  mongodbatlas_team,
+  json_each(users) as user;
 ```

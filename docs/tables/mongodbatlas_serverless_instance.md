@@ -16,7 +16,15 @@ The `mongodbatlas_serverless_instance` table provides insights into the configur
 ### Basic info
 Explore which serverless instances are in use in your MongoDB Atlas setup. This can help you monitor and manage your resources more effectively.
 
-```sql
+```sql+postgres
+select
+  id,
+  name
+from
+  mongodbatlas_serverless_instance;
+```
+
+```sql+sqlite
 select
   id,
   name
@@ -27,7 +35,7 @@ from
 ### Get connection details for serverless instances
 Explore the connection details for your serverless instances to understand how to connect to them in different scenarios. This can be particularly useful when setting up new applications or troubleshooting connectivity issues.
 
-```sql
+```sql+postgres
 select
   id,
   name,
@@ -37,10 +45,20 @@ from
   mongodbatlas_serverless_instance;
 ```
 
+```sql+sqlite
+select
+  id,
+  name,
+  json_extract(connection_strings, '$.standardSrv') as conn_str_standard_srv,
+  json_extract(connection_strings, '$.standard') as conn_str_standard
+from
+  mongodbatlas_serverless_instance;
+```
+
 ### List instances with provider backups disabled
 Explore which serverless instances have provider backups disabled to identify potential data loss risks and prioritize areas for improved data security.
 
-```sql
+```sql+postgres
 select
   name,
   cluster_type,
@@ -49,4 +67,15 @@ from
   mongodbatlas_serverless_instance
 where
   provider_backup_enabled = false;
+```
+
+```sql+sqlite
+select
+  name,
+  cluster_type,
+  provider_backup_enabled
+from
+  mongodbatlas_serverless_instance
+where
+  provider_backup_enabled = 0;
 ```

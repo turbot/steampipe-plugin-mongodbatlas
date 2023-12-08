@@ -16,7 +16,16 @@ The `mongodbatlas_container` table provides insights into the containers within 
 ### Basic info
 Explore the provider's name and associated network block information in your MongoDB Atlas resources. This can help you manage and organize your resources more effectively.
 
-```sql
+```sql+postgres
+select
+  id,
+  provider_name,
+  atlas_cidr_block
+from
+  mongodbatlas_container;
+```
+
+```sql+sqlite
 select
   id,
   provider_name,
@@ -28,7 +37,18 @@ from
 ### List all peered containers in a specific cloud provider
 Explore which containers in a specific cloud provider are peered. This is particularly useful for understanding your cloud network's configuration and identifying any potential security risks.
 
-```sql
+```sql+postgres
+select
+  id,
+  provider_name,
+  atlas_cidr_block
+from
+  mongodbatlas_container
+where
+  provider_name = 'aws';
+```
+
+```sql+sqlite
 select
   id,
   provider_name,

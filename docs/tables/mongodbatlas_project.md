@@ -16,7 +16,15 @@ The `mongodbatlas_project` table provides insights into projects within MongoDB 
 ### Basic info
 Explore the basic details of your MongoDB Atlas projects by identifying each project's unique identifier and name. This can help you keep track of your projects and maintain an organized database.
 
-```sql
+```sql+postgres
+select
+  id,
+  name
+from
+  mongodbatlas_project;
+```
+
+```sql+sqlite
 select
   id,
   name
@@ -27,7 +35,18 @@ from
 ### List projects with at least 1 cluster
 Discover the projects that have one or more clusters associated with them, allowing you to identify areas of resource allocation and usage. This can be beneficial in understanding project resource utilization and managing resources efficiently.
 
-```sql
+```sql+postgres
+select
+  id,
+  name,
+  cluster_count
+from
+  mongodbatlas_project
+where
+  cluster_count > 0;
+```
+
+```sql+sqlite
 select
   id,
   name,
