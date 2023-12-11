@@ -73,7 +73,4 @@ connection "mongodbatlas" {
 - `public_key` - (optional) The API public key from the MongoDB Atlas console. Can also be set with the `MONGODB_ATLAS_PUBLIC_API_KEY` environment variable.
 - `private_key` - (optional) The API private key from the MongoDB Atlas console. Can also be set with the `MONGODB_ATLAS_PRIVATE_API_KEY` environment variable.
 
-## Get involved
 
-- Open source: https://github.com/turbot/steampipe-plugin-mongodbatlas
-- Community: [Join #steampipe on Slack →](https://turbot.com/community/join)
