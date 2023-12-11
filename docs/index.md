@@ -8,6 +8,7 @@ name: mongodbatlas
 description: Steampipe plugin for querying clusters, users, teams and more from MongoDB Atlas.
 og_description: Query MongoDB Atlas with SQL! Open source CLI. No DB required.
 og_image: "/images/plugins/turbot/mongodbatlas-social-graphic.png"
+engines: ["steampipe", "sqlite", "postgres", "export"]
 ---
 
 # MongoDB Atlas + Steampipe
