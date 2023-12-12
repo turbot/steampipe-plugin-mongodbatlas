@@ -2,23 +2,11 @@ package mongodbatlas
 
 import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/schema"
 )
 
 type mongodbatlasConfig struct {
-	PublicKey  *string `cty:"public_key"`
-	PrivateKey *string `cty:"private_key"`
-}
-
-var ConfigSchema = map[string]*schema.Attribute{
-	"public_key": {
-		Type:     schema.TypeString,
-		Required: true,
-	},
-	"private_key": {
-		Type:     schema.TypeString,
-		Required: true,
-	},
+	PublicKey  *string `hcl:"public_key"`
+	PrivateKey *string `hcl:"private_key"`
 }
 
 func ConfigInstance() interface{} {
