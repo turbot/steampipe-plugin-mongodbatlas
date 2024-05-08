@@ -22,7 +22,7 @@ func tableMongoDBAtlasServerlessInstance(_ context.Context) *plugin.Table {
 			Hydrate:    getAtlasServerlessInstance,
 			KeyColumns: plugin.AllColumns([]string{"name", "project_id"}),
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "id",
 				Description: "Unique identifier of the cluster.",
@@ -68,7 +68,7 @@ func tableMongoDBAtlasServerlessInstance(_ context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Name"),
 			},
-		},
+		}),
 	}
 }
 

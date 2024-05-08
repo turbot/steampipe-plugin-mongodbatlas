@@ -27,7 +27,7 @@ func tableMongoDBAtlasContainer(_ context.Context) *plugin.Table {
 			Hydrate:    getContainer,
 			KeyColumns: plugin.AllColumns([]string{"id", "project_id"}),
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "id",
 				Description: "Unique identifier for the container.",
@@ -94,7 +94,7 @@ func tableMongoDBAtlasContainer(_ context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("NetworkName"),
 			},
-		},
+		}),
 	}
 }
 

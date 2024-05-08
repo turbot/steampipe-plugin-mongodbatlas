@@ -21,7 +21,7 @@ func tableMongoDBAtlasProject(_ context.Context) *plugin.Table {
 			Hydrate:    getMongoDBAtlasProject,
 			KeyColumns: plugin.SingleColumn("id"),
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "id",
 				Description: "A unique identifier of the project.",
@@ -51,7 +51,7 @@ func tableMongoDBAtlasProject(_ context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Name"),
 			},
-		},
+		}),
 	}
 }
 

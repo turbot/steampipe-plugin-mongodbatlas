@@ -22,7 +22,7 @@ func tableMongoDBAtlasTeam(_ context.Context) *plugin.Table {
 			Hydrate:       listMongodDBAtlasTeams,
 			ParentHydrate: listMongoDBAtlasOrg,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "id",
 				Description: "Unique identifier for the team.",
@@ -53,7 +53,7 @@ func tableMongoDBAtlasTeam(_ context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Name"),
 			},
-		},
+		}),
 	}
 }
 

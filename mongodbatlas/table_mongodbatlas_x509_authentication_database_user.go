@@ -18,7 +18,7 @@ func tableMongoDBAtlasX509AuthenticationDatabaseUser(_ context.Context) *plugin.
 			ParentHydrate: listMongoDBAtlasProjects,
 			KeyColumns:    plugin.OptionalColumns([]string{"project_id"}),
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "id",
 				Description: "Serial number of this certificate.",
@@ -57,7 +57,7 @@ func tableMongoDBAtlasX509AuthenticationDatabaseUser(_ context.Context) *plugin.
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Subject"),
 			},
-		},
+		}),
 	}
 }
 

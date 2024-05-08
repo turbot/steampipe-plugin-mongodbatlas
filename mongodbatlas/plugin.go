@@ -16,6 +16,12 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 		Name:             pluginName,
 		DefaultTransform: transform.FromGo().NullIfZero(),
 		DefaultGetConfig: &plugin.GetConfig{},
+		ConnectionKeyColumns: []plugin.ConnectionKeyColumn{
+			{
+				Name:    "organization_id",
+				Hydrate: getOrganizationId,
+			},
+		},
 		ConnectionConfigSchema: &plugin.ConnectionConfigSchema{
 			NewInstance: ConfigInstance,
 		},
@@ -45,4 +51,8 @@ func hasNextPage(r *mongodbatlas.Response) bool {
 		}
 	}
 	return false
+}
+
+func getOrgId(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	return getOrganizationIdMemoized(ctx, d, h)
 }

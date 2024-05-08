@@ -17,7 +17,7 @@ func tableMongoDBAtlasOrg(_ context.Context) *plugin.Table {
 			Hydrate:    listMongoDBAtlasOrg,
 			KeyColumns: plugin.OptionalColumns([]string{"id"}),
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "id",
 				Description: "Unique identifier for the organization.",
@@ -41,7 +41,7 @@ func tableMongoDBAtlasOrg(_ context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Name"),
 			},
-		},
+		}),
 	}
 }
 
