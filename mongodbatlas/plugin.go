@@ -52,7 +52,3 @@ func hasNextPage(r *mongodbatlas.Response) bool {
 	}
 	return false
 }
-
-func getOrgId(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	return getOrganizationIdMemoized(ctx, d, h)
-}
