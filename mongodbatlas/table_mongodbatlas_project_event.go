@@ -34,7 +34,7 @@ func tableMongoDBAtlasProjectEvents(_ context.Context) *plugin.Table {
 			Hydrate:    getAtlasProjectEvent,
 			KeyColumns: plugin.AllColumns([]string{"alert_id", "project_id"}),
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "id",
 				Description: "Unique identifier for the event.",
@@ -193,7 +193,7 @@ func tableMongoDBAtlasProjectEvents(_ context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("ID").NullIfZero(),
 			},
-		},
+		}),
 	}
 }
 

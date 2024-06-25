@@ -22,7 +22,7 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 			Hydrate:    getMongoDBAtlasCluster,
 			KeyColumns: plugin.AllColumns([]string{"name", "project_id"}),
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "id",
 				Description: "Unique 24-hexadecimal digit string that identifies the cluster.",
@@ -165,7 +165,7 @@ func tableMongoDBAtlasCluster(_ context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Name"),
 			},
-		},
+		}),
 	}
 }
 

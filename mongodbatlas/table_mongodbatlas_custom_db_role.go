@@ -27,7 +27,7 @@ func tableMongoDBAtlasCustomDBRole(_ context.Context) *plugin.Table {
 			Hydrate:    getAtlasCustomDBRole,
 			KeyColumns: plugin.AllColumns([]string{"role_name", "project_id"}),
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "role_name",
 				Description: "The name of the role.",
@@ -55,7 +55,7 @@ func tableMongoDBAtlasCustomDBRole(_ context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("RoleName"),
 			},
-		},
+		}),
 	}
 }
 

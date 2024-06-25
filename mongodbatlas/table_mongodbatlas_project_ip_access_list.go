@@ -40,7 +40,7 @@ func tableMongoDBAtlasProjectIpAccessList(_ context.Context) *plugin.Table {
 				},
 			},
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "aws_security_group",
 				Description: "Unique identifier of AWS security group in this access list entry.",
@@ -83,7 +83,7 @@ func tableMongoDBAtlasProjectIpAccessList(_ context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("CIDRBlock"),
 			},
-		},
+		}),
 	}
 }
 

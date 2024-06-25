@@ -22,7 +22,7 @@ func tableMongoDBAtlasDatabaseUser(_ context.Context) *plugin.Table {
 			Hydrate:    getAtlasDatabaseUser,
 			KeyColumns: plugin.AllColumns([]string{"username", "database_name", "project_id"}),
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "database_name",
 				Description: "Database against which the database user authenticates. Database users must provide both a username and authentication database to log into MongoDB.",
@@ -67,7 +67,7 @@ func tableMongoDBAtlasDatabaseUser(_ context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("DatabaseName"),
 			},
-		},
+		}),
 	}
 }
 
