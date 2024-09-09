@@ -65,7 +65,7 @@ func createClient(ctx context.Context, publicKey string, privateKey string) *mon
 	t := digest.NewTransport(publicKey, privateKey)
 	tc, err := t.Client()
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatalf("Fatal error: %v", err)
 	}
 
 	return mongodbatlas.NewClient(&http.Client{
