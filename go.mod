@@ -6,7 +6,7 @@ toolchain go1.23.2
 
 require (
 	github.com/mongodb-forks/digest v1.0.3
-	github.com/turbot/steampipe-plugin-sdk/v5 v5.11.6
+	github.com/turbot/steampipe-plugin-sdk/v5 v5.11.7
 	go.mongodb.org/atlas v0.15.0
 )
 
