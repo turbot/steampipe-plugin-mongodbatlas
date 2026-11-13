@@ -10,14 +10,14 @@ import (
 
 	"github.com/mongodb-forks/digest"
 	"github.com/turbot/steampipe-plugin-mongodbatlas/constants"
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v6/plugin"
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
 // getMongoDBAtlasClient :: returns a mongodbatlas client to perform API requests.
 func getMongoDBAtlasClient(ctx context.Context, d *plugin.QueryData) (*mongodbatlas.Client, error) {
 	// Try to load client from cache
-	if cachedData, ok := d.ConnectionManager.Cache.Get(constants.CacheKeyMongoDbAtlasClient); ok {
+	if cachedData, ok := d.ConnectionCache.Get(ctx, constants.CacheKeyMongoDbAtlasClient); ok {
 		return cachedData.(*mongodbatlas.Client), nil
 	}
 
@@ -31,7 +31,9 @@ func getMongoDBAtlasClient(ctx context.Context, d *plugin.QueryData) (*mongodbat
 	client := createClient(ctx, publicKey, privateKey)
 
 	// save client in cache
-	d.ConnectionManager.Cache.Set(constants.CacheKeyMongoDbAtlasClient, client)
+	if err := d.ConnectionCache.Set(ctx, constants.CacheKeyMongoDbAtlasClient, client); err != nil {
+		plugin.Logger(ctx).Warn("getMongoDBAtlasClient", "cache_set_error", err)
+	}
 
 	return client, nil
 }
