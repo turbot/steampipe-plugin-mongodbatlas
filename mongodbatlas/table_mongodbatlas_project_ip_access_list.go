@@ -4,15 +4,15 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v6/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v6/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v6/plugin/transform"
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
 func tableMongoDBAtlasProjectIpAccessList(_ context.Context) *plugin.Table {
 	return &plugin.Table{
-		Name: "mongodbatlas_project_ip_access_list",
+		Name:        "mongodbatlas_project_ip_access_list",
 		Description: "Atlas only allows client connections to the database deployment from entries in the project's IP access list. Each entry is either a single IP address or a CIDR-notated range of addresses. For AWS clusters with one or more VPC Peering connections to the same AWS region, you can specify a Security Group associated with a peered VPC. The IP access list applies to all database deployments in the project and can have up to 200 IP access list entries, with the following exception: projects with an existing sharded cluster created before August 25, 2017 can have up to 100 IP access list entries.",
 		List: &plugin.ListConfig{
 			Hydrate:       listMongoDBAtlasProjectIpAccessList,
